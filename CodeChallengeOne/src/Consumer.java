@@ -1,12 +1,12 @@
 import java.util.LinkedList;
 import java.util.Random;
 
-public class Consumer<T> implements Runnable {
-	private LinkedList<T> sharedResource;
+public class Consumer implements Runnable {
+	private LinkedList<String> sharedResource;
 	private final int MAX_LENGTH;
 	private Lock lock;
 	
-	public Consumer(LinkedList<T> sharedResource, final int MAX_LENGTH, Lock lock) {
+	public Consumer(LinkedList<String> sharedResource, final int MAX_LENGTH, Lock lock) {
 		this.sharedResource = sharedResource;
 		this.MAX_LENGTH = MAX_LENGTH;
 		this.lock = lock;
@@ -24,8 +24,16 @@ public class Consumer<T> implements Runnable {
 				for(int i = 0; i < amountAdded; i++ ) {
 					sharedResource.pop();
 				}
+				System.out.println("Comsumer consumed " + amountAdded + " strings.");
 				
 				lock.releaseLock();
+			}
+			
+			int sleepTime = r.nextInt(500);
+			try {
+				Thread.sleep(sleepTime);
+			} catch(InterruptedException e) {
+				
 			}
 		}
 	}
