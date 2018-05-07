@@ -213,3 +213,100 @@ BEGIN
 END GET_EMPLOYEES_BORN_AFTER_1968;
 
 --TEST:   SELECT * FROM TABLE(GET_EMPLOYEES_BORN_AFTER_1968);
+
+--4.0 Stored Procedures
+
+--4.1 Basic Stored Procedure
+--Task – Create a stored procedure that selects the first and last names of all the employees.
+CREATE OR REPLACE PROCEDURE FIRST_AND_LAST_NAME_EMPLOYEES(employees_result OUT SYS_REFCURSOR) AS 
+BEGIN
+    OPEN employees_result FOR SELECT FIRSTNAME, LASTNAME FROM EMPLOYEE;
+END;
+
+--4.2 Stored Procedure Input Parameters
+--Task – Create a stored procedure that updates the personal information of an employee.
+CREATE OR REPLACE PROCEDURE UPDATE_EMPLOYEE(EMPLOYEEID_V NUMBER, LASTNAME_V VARCHAR2, FIRSTNAME_V VARCHAR2,
+    TITLE_V	VARCHAR2, REPORTSTO_V NUMBER, BIRTHDATE_V DATE, HIREDATE_V DATE, ADDRESS_V VARCHAR2, CITY_V	VARCHAR2,
+    STATE_V	VARCHAR2, COUNTRY_V	VARCHAR2, POSTALCODE_V	VARCHAR2, PHONE_V VARCHAR2, FAX_V VARCHAR2, EMAIL_V	VARCHAR2)
+AS
+BEGIN
+    UPDATE EMPLOYEE SET 
+        LASTNAME = LASTNAME_V,
+        FIRSTNAME = FIRSTNAME_V,
+        TITLE = TITLE_V,
+        REPORTSTO = REPORTSTO_V,
+        BIRTHDATE = BIRTHDATE_V,
+        HIREDATE = HIREDATE_V,
+        ADDRESS = ADDRESS_V,
+        CITY = CITY_V,
+        STATE = STATE_V,
+        COUNTRY = COUNTRY_V,
+        POSTALCODE = POSTALCODE_V,
+        PHONE = PHONE_V,
+        FAX = FAX_V,
+        EMAIL = EMAIL_V
+    WHERE EMPLOYEEID = EMPLOYEEID_V;
+END;
+
+--Task – Create a stored procedure that returns the managers of an employee.
+CREATE OR REPLACE PROCEDURE EMPLOYEES_MANAGER(EMPLOYEE_ID IN NUMBER, MANAGER_ID OUT NUMBER) 
+AS
+    MANAGER_NUM NUMBER;
+BEGIN
+    SELECT REPORTSTO INTO MANAGER_ID FROM EMPLOYEE WHERE EMPLOYEEID = EMPLOYEE_ID;
+END;
+
+--4.3 Stored Procedure Output Parameters
+--Task – Create a stored procedure that returns the name and company of a customer.
+CREATE OR REPLACE PROCEDURE CUSTOMER_NAME_AND_COMPANY(C_ID IN NUMBER, C_FIRSTNAME OUT VARCHAR2, C_LASTNAME OUT VARCHAR2, COM_NAME OUT VARCHAR2)
+AS
+BEGIN
+    SELECT FIRSTNAME, LASTNAME, COMPANY INTO C_FIRSTNAME, C_LASTNAME, COM_NAME FROM CUSTOMER WHERE CUSTOMERID = C_ID;
+END;
+
+--5.0 Transactions
+--Task – Create a transaction that given a invoiceId will delete that invoice (There may be constraints that rely on this, find out how to resolve them).
+CREATE OR REPLACE PROCEDURE DELETE_INVOICE(I_ID IN NUMBER)  
+AS
+BEGIN
+    EXECUTE IMMEDIATE 'ALTER TABLE INVOICELINE DROP CONSTRAINT FK_INVOICELINEINVOICEID';
+    DELETE FROM INVOICE WHERE INVOICEID = I_ID;
+    DELETE FROM INVOICELINE WHERE INVOICEID = I_ID;
+    EXECUTE IMMEDIATE 'ALTER TABLE INVOICELINE ADD CONSTRAINT FK_INVOICELINEINVOICEID
+        FOREIGN KEY (INVOICEID)
+        REFERENCES INVOICE(INVOICEID)';
+    COMMIT;
+END;
+
+--EXECUTE DELETE_INVOICE(321);
+
+--6.0 Triggers
+
+--6.1 AFTER/FOR
+--Task - Create an after insert trigger on the employee table fired after a new record is inserted into the table.
+CREATE OR REPLACE TRIGGER AFTER_EMPLOYEE_INSERT
+AFTER INSERT ON EMPLOYEE
+DECLARE
+BEGIN
+    dbms_output.put_line('something inserted into EMPLOYEE');
+    --Something here will happen after insert
+END;
+
+--Task – Create an after update trigger on the album table that fires after a row is inserted in the table
+CREATE OR REPLACE TRIGGER AFTER_ALBUM_UPDATE
+AFTER UPDATE ON ALBUM
+DECLARE
+BEGIN
+    dbms_output.put_line('Updated ALBUM');
+END;
+
+--Task – Create an after delete trigger on the customer table that fires after a row is deleted from the table.
+CREATE OR REPLACE TRIGGER AFTER_CUSTOMER_DELETE
+AFTER DELETE ON CUSTOMER
+DECLARE
+BEGIN
+    dbms_output.put_line('Deleted from CUSTOMER');
+END;
+
+UPDATE ALBUM SET TITLE = 'update' WHERE ALBUMID = 3;
+    
