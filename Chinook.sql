@@ -308,5 +308,27 @@ BEGIN
     dbms_output.put_line('Deleted from CUSTOMER');
 END;
 
-UPDATE ALBUM SET TITLE = 'update' WHERE ALBUMID = 3;
-    
+
+--7.0 JOINS
+--In this section you will be working with combining various tables through the use of joins. You will work with outer, inner, right, left, cross, and self joins.
+--7.1 INNER
+--Task – Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId.
+SELECT LASTNAME, FIRSTNAME, INVOICEID FROM (CUSTOMER INNER JOIN INVOICE ON CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID);
+--7.2 OUTER
+--Task – Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
+SELECT CUSTOMER.CUSTOMERID, FIRSTNAME, LASTNAME, INVOICEID, TOTAL FROM (CUSTOMER FULL OUTER JOIN INVOICE on CUSTOMER.CUSTOMERID = INVOICE.CUSTOMERID);
+--7.3 RIGHT
+--Task – Create a right join that joins album and artist specifying artist name and title.
+SELECT ARTIST.NAME, ALBUM.TITLE FROM (ALBUM RIGHT OUTER JOIN ARTIST ON ALBUM.ARTISTID = ARTIST.ARTISTID);
+--7.4 CROSS
+--Task – Create a cross join that joins album and artist and sorts by artist name in ascending order.
+SELECT * FROM (ALBUM CROSS JOIN ARTIST) ORDER BY ARTIST.NAME ASC;
+--7.5 SELF
+--Task – Perform a self-join on the employee table, joining on the reportsto column.
+SELECT E.LASTNAME AS LASTNAME1, E.FIRSTNAME AS FIRSTNAME1, M.LASTNAME AS LASTNAME2, M.FIRSTNAME AS FIRSTNAME2, E.REPORTSTO 
+FROM (EMPLOYEE E JOIN EMPLOYEE M ON E.REPORTSTO = M.REPORTSTO);
+
+
+
+
+
