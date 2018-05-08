@@ -1,3 +1,3 @@
 README
 
-Vampire web page project
+Vampire web project
