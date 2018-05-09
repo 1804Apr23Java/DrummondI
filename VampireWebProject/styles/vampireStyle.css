@@ -10,17 +10,20 @@ html {
 h1, h2, h3, a, label, p, li {
 	color: red;
 }
-
-#navb {
+.navbar {
 	border: 3px solid red;
-	width: 200px;
 }
 
 .nav {
 	padding: 5px;
 	margin: 5px;
 }
-
+.carousel {
+	width:360px;
+	height:360px;
+	margin:auto;
+	margin-top: 25px;
+  }
 a:hover {
 	color: white;
 }
