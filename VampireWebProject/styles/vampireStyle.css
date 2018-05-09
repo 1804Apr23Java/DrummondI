@@ -1,8 +1,13 @@
-html {
-	background-color: black;
+h1 {
+	text-align: center;
 }
 
-h1, h2, a, label {
+html {
+	background-color: black;
+	
+}
+
+h1, h2, h3, a, label, p, li {
 	color: red;
 }
 
@@ -18,4 +23,24 @@ h1, h2, a, label {
 
 a:hover {
 	color: white;
+}
+
+.formlabel {
+	display: inline-block;
+	width: 80px;
+	margin: 5px;
+}
+
+textarea {
+	width: 235px;
+	margin: 5px;
+}
+
+button {
+	margin-left: 100px;
+}
+
+.mediavampire {
+	height: 300px;
+	width: 200px;
 }
