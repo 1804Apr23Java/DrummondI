@@ -1,6 +1,8 @@
 var homework = {};
 
-/* Returns the nth Fibonacci number or -1 if passed a value that is not a number or is less than 0.
+/* Problem 1
+ *
+ * Returns the nth Fibonacci number or -1 if passed a value that is not a number or is less than 0.
  */
 homework.fibonacci = function(n) {
 	if(typeof n !== "number" ||  n < 0) return -1;
@@ -16,14 +18,16 @@ homework.fibonacci = function(n) {
 	return i;
 }
 
-/* TESTING
+/* TESTING for problem 1
 for(let i = 0; i < 25; i++) {
 	console.log('Fibonacci number ' + i + " = " + homework.fibonacci(i));
 }
 */
 
 
-/* Sorts an array of integers from least to greatest. Returns true if sorted and false if passed
+/* PROBLEM 2
+ *
+ * Sorts an array of integers from least to greatest. Returns true if sorted and false if passed
  * an unsortable array.
  * 
  */
@@ -53,7 +57,7 @@ homework.sort = function(array) {
 }
 
 
-/*
+/* TESTING for problem 2
 let t1 = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10];
 console.log(t1);
 console.log(homework.sort(t1));
@@ -67,7 +71,9 @@ console.log(t2);
 */
 
 
-/* Returns the nth factorial of a number or -1 for invalid input
+/* PROBLEM 3
+ *
+ * Returns the nth factorial of a number or -1 for invalid input
  *
  */
 homework.factorial = function(n) {
@@ -81,13 +87,16 @@ homework.factorial = function(n) {
 	return factorial;
 }
 
-/* TESTING homework.factorial
+/* TESTING for problem 3
 for(let i = 0; i < 10; i++) {
 	console.log(i + "! = " + homework.factorial(i));
 }
 */
 
-/* PROBLEM 4 : Rotate Left
+/* PROBLEM 4
+ *
+ * Rotate the array left by the indicated amount. Returns true if successful and false if the
+ * passed value is invalid input.
  *
  */
 homework.rotateLeft = function(array, n) {
@@ -116,7 +125,7 @@ homework.rotateLeft = function(array, n) {
 	return true;
 }
 
-/* TESTING problem 4
+/* TESTING for problem 4
 let a1 = [1,2,3,4,5];
 console.log(a1);
 homework.rotateLeft(a1, 1);
@@ -133,5 +142,72 @@ a1 = [1,2,3,4,5];
 console.log(a1);
 homework.rotateLeft(a1, 3);
 console.log(a1);
+console.log(" ");
+*/
+
+/* PROBLEM 5
+ *
+ * Takes an input string and returns true if the string contains balanced parentheses or false if
+ * the parentheses are unbalanced, the string contains invalid input, or the input variable is invalid.
+ */
+homework.balancedBrackets = function(bracketsString) {
+	if(!typeof bracketsString === "string") return false;
+	if(bracketsString.length % 2 === 1) return false;
+	
+	array = [];
+	for(let i = 0; i < bracketsString.length; i++) {
+		let c = bracketsString.charAt(i);
+		switch(c) {
+			case '{' : array.push(c); break;
+			case '}' : if(array.pop() !== '{') return false;
+					   break;
+			case '[' : array.push(c); break;
+			case ']' : if(array.pop() !== '[') return false;
+					   break;
+			case '(' : array.push(c); break;
+			case ')' : if(array.pop() !== '(') return false;
+					   break;
+			default  : return false;
+		}
+	}
+	
+	return(array.length === 0) ? true : false;
+}
+
+/* TESTING for question 5
+let s1 = '()';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '()()';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '(())';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '({[]})';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '([])[{{}}[])';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '(';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '}';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '(()(';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+
+s1 = '([)]';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
 console.log(" ");
 */

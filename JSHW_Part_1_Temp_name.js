@@ -136,24 +136,64 @@ console.log(a1);
 console.log(" ");
 */
 
+homework.balancedBrackets = function(bracketsString) {
+	if(!typeof bracketsString === "string") return false;
+	if(bracketsString.length % 2 === 1) return false;
+	
+	array = [];
+	for(let i = 0; i < bracketsString.length; i++) {
+		let c = bracketsString.charAt(i);
+		switch(c) {
+			case '{' : array.push(c); break;
+			case '}' : if(array.pop() !== '{') return false;
+					   break;
+			case '[' : array.push(c); break;
+			case ']' : if(array.pop() !== '[') return false;
+					   break;
+			case '(' : array.push(c); break;
+			case ')' : if(array.pop() !== '(') return false;
+					   break;
+			default  : return false;
+		}
+	}
+	
+	return(array.length === 0) ? true : false;
+}
 
+/* TESTING question 5
+let s1 = '()';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
+s1 = '()()';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
+s1 = '(())';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
+s1 = '({[]})';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
+s1 = '([])[{{}}[])';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
+s1 = '(';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
+s1 = '}';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
+s1 = '(()(';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
 
-
-
-
-
-
-
-
-
-
-
-
-
+s1 = '([)]';
+console.log(s1 + ' is balanced = ' + homework.balancedBrackets(s1));
+console.log(" ");
+*/
