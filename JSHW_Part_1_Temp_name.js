@@ -92,18 +92,49 @@ for(let i = 0; i < 10; i++) {
  */
 homework.rotateLeft = function(array, n) {
 	if(!Array.isArray(array) || typeof n !== 'number' || n < 0) return false;
-	let shift = array.length - n;
 	
-	for(let i = 0; i < array.length; i++) {
-		let index = (i + shift) % array.length;
-		let temp = array[i];
-		array[i] = array[index];
-		array[index] = temp;
+	let len = array.length;
+	
+	if(len == 0 || len == 1) return true;
+	
+	let shift = (n % len);
+	
+	let count = 0;
+	let i = 0;
+	let holdValue = array[0];
+	while(count < len) {
+		let j = (i - shift >= 0) ? (i - shift) : (len + i - shift);
+		
+		let temp = array[j];
+		array[j] = holdValue;
+		holdValue = temp;
+		
+		i = j;
+		count++;
 	}
+	
+	return true;
 }
 
+/* TESTING problem 4
+let a1 = [1,2,3,4,5];
+console.log(a1);
+homework.rotateLeft(a1, 1);
+console.log(a1);
+console.log(" ");
 
+a1 = [1,2,3,4,5];
+console.log(a1);
+homework.rotateLeft(a1, 6);
+console.log(a1);
+console.log(" ");
 
+a1 = [1,2,3,4,5];
+console.log(a1);
+homework.rotateLeft(a1, 3);
+console.log(a1);
+console.log(" ");
+*/
 
 
 
