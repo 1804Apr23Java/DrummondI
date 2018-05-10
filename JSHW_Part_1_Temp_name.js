@@ -28,7 +28,7 @@ for(let i = 0; i < 25; i++) {
  * 
  */
  
- /*
+
 homework.sort = function(array) {
 	if(!array || !Array.isArray(array)) return false;
 	
@@ -36,7 +36,7 @@ homework.sort = function(array) {
 		let min = array[i];
 		let minInd = i;
 		
-		for(let j = 0; j < array.length; j++) {
+		for(let j = i; j < array.length; j++) {
 			if(typeof array[j] !== 'number') return false;
 			
 			if(array[j] < min) {
@@ -53,7 +53,7 @@ homework.sort = function(array) {
 }
 
 
-
+/*
 let t1 = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10];
 console.log(t1);
 console.log(homework.sort(t1));
@@ -96,6 +96,9 @@ homework.rotateLeft = function(array, n) {
 	
 	for(let i = 0; i < array.length; i++) {
 		let index = (i + shift) % array.length;
+		let temp = array[i];
+		array[i] = array[index];
+		array[index] = temp;
 	}
 }
 
