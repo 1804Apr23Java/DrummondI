@@ -145,11 +145,22 @@ num2.addEventListener('change', sumEvent);
 
 
 
+
 //7. Skills Event
 //NOTE: Write unobtrusive Javascript
 //When user selects a skill, create an alert with a message similar to:
 //"Are you sure CSS is one of your skills?"
 //NOTE: no alert should appear when user deselects a skill.
+let skillSelect = document.getElementsByName('skills')[0].addEventListener('change', function(e) {
+	let val = e.target.value;
+	let valElement = document.querySelectorAll('option[value="' + val + '"]')[0];
+	
+	alert('Are you sure ' + valElement.innerHTML + ' is one of your skills?');
+})
+
+
+
+
 
 
 //8. Favorite Color Event
