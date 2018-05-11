@@ -4,12 +4,21 @@
 //Please put the question itself as a comment above each answer.
 //Due 5pm, Monday, May 14 in your branch. 
 
+
+
+
+
 //1. USA
 //Define function getUSA()
 //Find the html element that contains "USA".
 //Print that element's contents.
   
 
+  
+  
+  
+  
+  
 //2. Sales
 //Define function getPeopleInSales()
 //Print the names of all the people in the sales department.
@@ -24,6 +33,11 @@ function getPeopleInSales() {
 	}
 }
 //getPeopleInSales();
+
+
+
+
+
 
 //3. Click Here
 //Define function getAnchorChildren()
@@ -45,13 +59,32 @@ function getAnchorChildren() {
 		}
 	}
 }
-getAnchorChildren();
+//getAnchorChildren();
+
+
+
+
 
 //4. Hobbies
 //Define function     
 //Find all checked options in the 'skills' select element.
 //Print the value and the contents.
-  
+function getHobbies() {
+	let array = document.getElementsByName('skills');
+	
+	//Expect only one skills section
+	let skillSelect = array[0];
+	if(skillSelect && skillSelect.tagName === 'SELECT') {
+		let child = skillSelect.firstElementChild;
+		
+		while(child && child.tagName === 'OPTION') {
+			console.log('value = ' + child.getAttribute('value') + ", contents = " + child.innerHTML);
+			child = child.nextElementSibling;
+		}
+	}
+	
+}
+getHobbies();
 
 //5. Custom Attribute
 //Define function getCustomAttribute()
