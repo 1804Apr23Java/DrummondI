@@ -106,6 +106,9 @@ function getCustomerAttribute() {
 //getCustomerAttribute();
 
 
+
+
+
 //6. Sum Event
 //NOTE: Write unobtrusive Javascript
 //Regarding these elements:
@@ -116,6 +119,30 @@ function getCustomerAttribute() {
 //Add <input> element values.
 //Put the sum in the <span> element.
 //If values cannot be added, put "Cannot add" in the <span> element
+let num1 = document.getElementById('num1');
+let num2 = document.getElementById('num2');
+let sum = document.getElementById('sum');
+
+let sumEvent = function() {
+	let n1 = new Number(num1.value);
+	let n2 = new Number(num2.value);
+	n1 = n1 + n2;
+	
+	if(n1) {
+		sum.innerHTML = String(n1);
+	} else {
+		sum.innerHTML = 'Cannot add';
+	}
+}
+
+num1.addEventListener('change', sumEvent);
+num2.addEventListener('change', sumEvent);
+
+
+
+
+
+
 
 
 //7. Skills Event
