@@ -180,15 +180,20 @@ for(let i = 0; i < favCol.length; i++) {
 			alert('So now you like ' + e.target.value + '?');
 			oldCol = e.target.value;
 			first = false;
+			setColor(e.target.value, favCol);
 		} else {
 			alert('So now you like ' + e.target.value + ' more than ' + oldCol + ' now?');
 			oldCol = e.target.value;
+			setColor(e.target.value, favCol);
 		}
 	});
 }
 
-
-
+function setColor(col, array) {
+	for(let i = 0; i < array.length; i++) {
+		array[i].setAttribute('style', 'background-color: ' + col + ';');
+	}
+}
 //9. Show/Hide Event
 //NOTE: Write unobtrusive Javascript
 //When user hovers over an employees name:
