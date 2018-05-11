@@ -171,6 +171,22 @@ let skillSelect = document.getElementsByName('skills')[0].addEventListener('chan
 //In this example, green is the new value and blue is the old value.
 //Make the background color (of all favoriteColor radio buttons) 
 //the newly selected favoriteColor
+let favCol = document.getElementsByName('favoriteColor');
+let oldCol = '';
+let first = true;
+for(let i = 0; i < favCol.length; i++) {
+	favCol[i].addEventListener('change', (e) => {
+		if(first) {
+			alert('So now you like ' + e.target.value + '?');
+			oldCol = e.target.value;
+			first = false;
+		} else {
+			alert('So now you like ' + e.target.value + ' more than ' + oldCol + ' now?');
+			oldCol = e.target.value;
+		}
+	});
+}
+
 
 
 //9. Show/Hide Event
