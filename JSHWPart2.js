@@ -194,11 +194,27 @@ function setColor(col, array) {
 		array[i].setAttribute('style', 'background-color: ' + col + ';');
 	}
 }
+
+
+
+
+
+
 //9. Show/Hide Event
 //NOTE: Write unobtrusive Javascript
 //When user hovers over an employees name:
 //Hide the name if shown.
 //   Show the name if hidden.
+let employees = document.getElementsByClassName('empName');
+for(let i = 0; i < employees.length; i++) {
+	employees[i].addEventListener('mouseover', (e) => {
+		
+	});
+}
+
+
+
+
 
 
 //10. Current Time
