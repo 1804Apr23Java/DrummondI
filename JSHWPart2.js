@@ -84,13 +84,26 @@ function getHobbies() {
 	}
 	
 }
-getHobbies();
+//getHobbies();
+
+
+
+
+
 
 //5. Custom Attribute
 //Define function getCustomAttribute()
 //Find all elements with "data-customAttr" attribute
 //Print the value of the attribute.
 //Print the element that has the attribute.
+function getCustomerAttribute() {
+	let array = document.querySelectorAll('[data-customAttr]');
+	
+	for(let i = 0 ; i < array.length; i++) {
+		console.log('value = ' + array[i].getAttribute('data-customAttr') + ', element = ' + array[i].tagName);
+	}
+}
+//getCustomerAttribute();
 
 
 //6. Sum Event
