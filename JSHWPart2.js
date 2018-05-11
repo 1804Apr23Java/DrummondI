@@ -209,6 +209,7 @@ let employees = document.getElementsByClassName('empName');
 for(let i = 0; i < employees.length; i++) {
 	employees[i].addEventListener('mouseover', (e) => {
 		
+		e.target.setAttribute('style', 'color: white;');
 	});
 }
 
