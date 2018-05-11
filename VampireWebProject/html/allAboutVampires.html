@@ -50,7 +50,7 @@
 		genre, still popular in the 21st century, with books, films, and television 
 		shows. The vampire has since become a dominant figure in the horror genre.</p>
 		
-		<form method="POST" >
+		<form method="GET" >
 			<h3>Please leave a comment</h3>
 			<div>
 				<label name="name" class="formlabel">User Name:</label>
@@ -61,12 +61,16 @@
 				<input type="email" name="email" class="inputlabel"/>
 			</div>
 			<div>
-				<textarea>Comment Here</textarea>
+				<textarea id="commentBox">Comment Here</textarea>
 			</div>
 			<div>
-				<button type="submit">Submit</button>
+				<button type="button" id="submitForm">Submit</button>
 			</div>
 		</form>
+		<br><br>
+		<div id="outputForm">
+			<h3>Previous comments</h3>
+		</div>
 	</body>
-	
+	<script src="../scripts/vampireScript.js"></script>
 </html>

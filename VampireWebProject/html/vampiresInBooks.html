@@ -64,27 +64,31 @@
 		
 		
 		
-		<form method="POST" >
-			<h3>Please leave a comment</h3>
-			<div>
-				<label name="name" class="formlabel">Name:</label>
-				<input type="text" name="name" class="inputlabel"/>
+		<form method="GET" >
+				<h3>Please leave a comment</h3>
+				<div>
+					<label name="name" class="formlabel">User Name:</label>
+					<input type="text" name="name" class="inputlabel"/>
+				</div>
+				<div>
+					<label name="email" class="formlabel">Email:</label>
+					<input type="email" name="email" class="inputlabel"/>
+				</div>
+				<div>
+					<textarea id="commentBox">Comment Here</textarea>
+				</div>
+				<div>
+					<button type="button" id="submitForm">Submit</button>
+				</div>
+			</form>
+			<br><br>
+			<div id="outputForm">
+				<h3>Previous comments</h3>
 			</div>
-			<div>
-				<label name="email" class="formlabel">Email:</label>
-				<input type="email" name="email" class="inputlabel"/>
-			</div>
-			<div>
-				<textarea>Comment Here</textarea>
-			</div>
-			<div>
-				<button type="submit">Submit</button>
-			</div>
-		</form>
-		
+
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 	</body>
-	
+	<script src="../scripts/vampireScript.js"></script>
 </html>
