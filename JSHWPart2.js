@@ -13,13 +13,39 @@
 //2. Sales
 //Define function getPeopleInSales()
 //Print the names of all the people in the sales department.
-  
+function getPeopleInSales() {
+	let array = document.getElementsByClassName('empName');
+	
+	for(let i = 0; i < array.length; i++) {
+		let sibling = array[i].nextElementSibling;
+		if(sibling && sibling.innerHTML === 'Sales') {
+			console.log(array[i].innerHTML);
+		}
+	}
+}
+//getPeopleInSales();
 
 //3. Click Here
 //Define function getAnchorChildren()
 //Find all anchor elements with a <span> child.
 //Print the contents of <span>
-  
+function getAnchorChildren() {
+	let array = document.getElementsByTagName('A');
+	
+	for(let i = 0; i < array.length; i++) {
+		
+		let child = array[i].firstElementChild;
+		
+		while(child) {
+			if(child.tagName === 'SPAN') {
+				console.log(child.innerHTML);
+				break;
+			}
+			child = child.nextElementSibling;
+		}
+	}
+}
+getAnchorChildren();
 
 //4. Hobbies
 //Define function     
