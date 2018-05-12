@@ -4,19 +4,15 @@
 //Please put the question itself as a comment above each answer.
 //Due 5pm, Monday, May 14 in your branch. 
 
-
-
-
-
 //1. USA
 //Define function getUSA()
 //Find the html element that contains "USA".
 //Print that element's contents.
-  
-
-  
-  
-  
+function getUSA() {
+	let usa = document.querySelectorAll('span[data-customAttr="USA"]')[0];
+	console.log(usa.innerHTML);
+}
+//getUSA();
   
   
 //2. Sales
@@ -33,10 +29,6 @@ function getPeopleInSales() {
 	}
 }
 //getPeopleInSales();
-
-
-
-
 
 
 //3. Click Here
@@ -62,9 +54,6 @@ function getAnchorChildren() {
 //getAnchorChildren();
 
 
-
-
-
 //4. Hobbies
 //Define function     
 //Find all checked options in the 'skills' select element.
@@ -87,10 +76,6 @@ function getHobbies() {
 //getHobbies();
 
 
-
-
-
-
 //5. Custom Attribute
 //Define function getCustomAttribute()
 //Find all elements with "data-customAttr" attribute
@@ -104,9 +89,6 @@ function getCustomerAttribute() {
 	}
 }
 //getCustomerAttribute();
-
-
-
 
 
 //6. Sum Event
@@ -139,13 +121,6 @@ num1.addEventListener('change', sumEvent);
 num2.addEventListener('change', sumEvent);
 
 
-
-
-
-
-
-
-
 //7. Skills Event
 //NOTE: Write unobtrusive Javascript
 //When user selects a skill, create an alert with a message similar to:
@@ -157,10 +132,6 @@ let skillSelect = document.getElementsByName('skills')[0].addEventListener('chan
 	
 	alert('Are you sure ' + valElement.innerHTML + ' is one of your skills?');
 })
-
-
-
-
 
 
 //8. Favorite Color Event
@@ -188,16 +159,12 @@ for(let i = 0; i < favCol.length; i++) {
 		}
 	});
 }
-
+//Convenience method used by Question 8
 function setColor(col, array) {
 	for(let i = 0; i < array.length; i++) {
 		array[i].setAttribute('style', 'background-color: ' + col + ';');
 	}
 }
-
-
-
-
 
 
 //9. Show/Hide Event
@@ -207,15 +174,17 @@ function setColor(col, array) {
 //   Show the name if hidden.
 let employees = document.getElementsByClassName('empName');
 for(let i = 0; i < employees.length; i++) {
+	employees[i] .setAttribute('style', 'Color: black');
+	
 	employees[i].addEventListener('mouseover', (e) => {
-		
-		e.target.setAttribute('style', 'color: white;');
+
+		if(e.target.getAttribute('style') === 'Color: black') {
+			e.target.setAttribute('style', 'color: white');
+		} else {
+			e.target.setAttribute('style', 'Color: black');
+		}
 	});
 }
-
-
-
-
 
 
 //10. Current Time
@@ -223,6 +192,10 @@ for(let i = 0; i < employees.length; i++) {
 //    <h5 id="currentTime"></h5>
 //Show the current time in this element in this format: 9:05:23 AM
 //The time should be accurate to the second without having to reload the page.
+let h5 = document.getElementById('currentTime');
+let q10interval = setInterval((e) => {
+	h5.innerHTML = new Date(Date.now()).toLocaleTimeString('en-US');
+}, 1000);
 
 
 //11. Delay
@@ -230,6 +203,16 @@ for(let i = 0; i < employees.length; i++) {
 //    s
 //<p id="helloWorld">Hello, World!</p>
 //Three seconds after a user clicks on this element, change the text to a random color.
+let pHelloWorld = document.getElementById('helloWorld')
+pHelloWorld.addEventListener('click', () => {
+	setTimeout(() => {
+		let v1 = Math.floor(Math.random() * 255);
+		let v2 = Math.floor(Math.random() * 255);
+		let v3 = Math.floor(Math.random() * 255);
+		
+		pHelloWorld.setAttribute('style', 'Color: rgb(' + v1 + ', ' + v2 + ', ' + v3 + ')');
+	}, 3000);
+})
 
 
 //12. Walk the DOM
@@ -237,3 +220,18 @@ for(let i = 0; i < employees.length; i++) {
 //This function should traverse every node in the DOM. 
 //Use recursion.
 //On each node, call func(node).
+function walkTheDOM(node, func) {
+	let allChildren = node.children;
+	if(allChildren == null) return;
+	
+	func(node);
+	
+	for(let i = 0; i < allChildren.length; i++) {
+		walkTheDOM(allChildren[i], func);
+	}
+}
+//TESTING question 12
+//let root = document.getElementsByTagName('html')[0];
+//walkTheDOM(root, (node) => {
+//	console.log(node.tagName);
+//});
