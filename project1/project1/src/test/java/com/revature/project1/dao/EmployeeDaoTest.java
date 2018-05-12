@@ -17,23 +17,27 @@ import com.revature.project1.connectionUtil.ConnectionUtil;
 import com.revature.project1.transportObjects.Employee;
 
 public class EmployeeDaoTest {
-	
 	private static final EmployeeDao e = new EmployeeDao();
+	Connection con;
+	
+	public EmployeeDaoTest() {
+		try {
+			con = ConnectionUtil.getConnectionFromFile("connection.properties");
+		} catch(Exception e) {
+			
+		}
+	}
 	
 	@Before
 	public void setupDatabaseForTests() {
 		try {
-			Connection con = ConnectionUtil.getConnectionFromFile("connection.properties");
 			con.setAutoCommit(true);
-			PreparedStatement p = con.prepareStatement("DELETE FROM EMPLOYEE");
-			
-			boolean affectedRows = p.execute();
-			System.out.println("affected rows  = " + affectedRows);
+			String sql = "DELETE FROM all_emp WHERE e_id <> 1";
+			PreparedStatement p = con.prepareStatement(sql);
+			int affectedRows = p.executeUpdate();
+			con.close();
 		} catch(SQLException e) {
-			System.out.println(e.getMessage());
-			System.out.println("In setupDatabaseForTests");
-		} catch(IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
