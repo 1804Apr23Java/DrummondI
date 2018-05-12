@@ -5,6 +5,11 @@ import java.util.List;
 
 import com.revature.project1.transportObjects.Employee;
 
+/**
+ * DAO pattern interface for accessing the employee information in a database.
+ * 
+ * @author Ian
+ */
 public interface EmployeeDaoInterface {
 	public Employee getEmployeeById(int Id) throws SQLException;
 	public Employee getEmployeeByUsername(String username) throws SQLException;

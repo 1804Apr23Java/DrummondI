@@ -1,5 +1,10 @@
 package com.revature.project1.transportObjects;
 
+/**
+ * Transport object (DAO design pattern) for employee information.
+ * 
+ * @author Ian
+ */
 public class Employee {
 	private int employeeId;
 	private String username;
