@@ -101,6 +101,7 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee " + lastname + ", " + firstname + "\n"
+			 + "Username: " + username + "\n"
 			 + "EmployeeID: " + employeeId + "\n"
 			 + "Email: " + email + "\n";
 	}
@@ -114,8 +115,48 @@ public class Employee {
 	 */
 	public String toString(int i) {
 		return "Employee # " + i + "\n"
+				+ "\tUsername: " + username + "\n"
 				+ "\tEmployee " + lastname + ", " + firstname + "\n"
 				+ "\tEmployeeID: " + employeeId + "\n"
 				+ "\tEmail: " + email + "\n";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (firstname == null) {
+			if (other.firstname != null)
+				return false;
+		} else if (!firstname.equals(other.firstname))
+			return false;
+		if (lastname == null) {
+			if (other.lastname != null)
+				return false;
+		} else if (!lastname.equals(other.lastname))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+	
+	
 }

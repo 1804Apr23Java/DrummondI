@@ -1,4 +1,4 @@
-package com.revature.project1.connectionUtil;
+package com.revature.project1.utilityClasses;
 
 import java.io.FileInputStream;
 import java.io.IOException;
