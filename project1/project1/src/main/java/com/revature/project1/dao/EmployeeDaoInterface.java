@@ -16,6 +16,7 @@ public interface EmployeeDaoInterface {
 	public List<Employee> getAllEmployees();
 	public Employee createEmployee(String username, String firstname, 
 								   String lastname, String email, String password) throws SQLException;
-	public Employee updateEmployee(int Id) throws SQLException;
+	public Employee updateEmployee(int Id, String username, String firstname, String lastname, String email,
+								   String password) throws SQLException;
 	public boolean deleteEmployee(int Id) throws SQLException;
 }

@@ -156,8 +156,45 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	}
 
 	@Override
-	public Employee updateEmployee(int Id) throws SQLException {
-		// TODO Auto-generated method stub
+	public Employee updateEmployee(int Id, String username, String firstname, String lastname, String email, String password) throws SQLException {
+		Employee e = null;
+		
+		try {
+			Connection con = ConnectionUtil.getConnectionFromFile("connection.properties");
+			con.setAutoCommit(true);
+				
+			String sql = "UPDATE all_emp SET e_un = ?, e_fn = ?, e_ln = ?, e_em = ?, e_pw = ? WHERE e_id = ?";
+			
+			PreparedStatement p = con.prepareStatement(sql);
+			p.setString(1, username);
+			p.setString(2, firstname);
+			p.setString(3, lastname);
+			p.setString(4, email);
+			p.setString(5, password);
+			p.setInt(6, Id);
+			
+			
+			int result = p.executeUpdate();
+			if(result != 1) {
+				//TODO
+			}
+			
+				Employee e = new  Employee(results.getInt("e_id"), 
+						  results.getString("e_un"),
+						  results.getString("e_fn"),
+						  results.getString("e_ln"),
+						  results.getString("e_em"),
+						  results.getString("e_pw"));
+				con.close();
+				return e;
+			}
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 

@@ -99,4 +99,15 @@ public class EmployeeDaoTest {
 		//eList.sort(new EmployeeComparator<Employee>());
 		assertTrue(allEmployees.equals(eList));
 	}
+	
+	@Test
+	public void updateEmployeeTest() throws SQLException {
+		e.createEmployee("Lalala", "La", "LaLa", "La", "lala");
+		
+		Employee em = e.getEmployeeByUsername("Lalala");
+		e.updateEmployee(em.getEmployeeId(), "Bla", "Bla", "Bla", null, null);
+		
+		Employee e2 = e.getEmployeeById(em.getEmployeeId());
+		assertEquals("Bla", e2.getUsername());
+	}
 }
