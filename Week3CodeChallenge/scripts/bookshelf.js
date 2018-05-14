@@ -46,14 +46,56 @@ for(let i = 0; i < books.length; i++) {
 	
 	let p = document.createElement('P');
 	p.setAttribute('class', 'card-text');
-	p.innerHTML = books[i].year + "/n" + books[i].genre;
+	p.innerHTML = books[i].year + " " + books[i].genre;
 	div2.appendChild(p);
 	
 	let a = document.createElement('A');
-	p.setAttribute('class', 'btn btn-primary');
-	p.setAttribute('href', "/" + books[i].title);
-	p.innerHTML = "View Book";
-	div2.appendChild(p);
+	a.setAttribute('class', 'btn btn-primary');
+	a.setAttribute('href', "/" + books[i].title);
+	a.innerHTML = "View Book";
+	div2.appendChild(a);
 	
 	bookshelf.appendChild(newBook);
 }
+
+document.getElementById('theformbutton').addEventListener('click', (e) => {
+	books.push(new Book(document.getElementById('exampleInputEmail1').value,
+						document.getElementById('exampleInputPassword1').value,
+						document.getElementById('exampleInputPassword2').value,
+						document.getElementById('exampleInputPassword3').value,
+						document.getElementById('exampleInputPassword4').value,
+						document.getElementById('exampleInputPassword5').value));
+	
+	let newBook = document.createElement('DIV');
+	newBook.setAttribute('class', 'card');
+	newBook.setAttribute('style', 'width: 18rem;');
+	
+	let img = document.createElement('IMG');
+	img.setAttribute('class', 'card-img-top');
+	
+	
+	img.setAttribute('src', '../images/' + books[books.length - 1].title + '.jpg');
+	newBook.appendChild(img);
+	
+	let div2 = document.createElement('DIV');
+	div2.setAttribute('class', 'card-body');
+	newBook.appendChild(div2);
+	
+	let h5 = document.createElement('H5');
+	h5.setAttribute('class', 'card-title');
+	h5.innerHTML = books[books.length - 1].getStringRep();
+	div2.appendChild(h5);
+	
+	let p = document.createElement('P');
+	p.setAttribute('class', 'card-text');
+	p.innerHTML = books[books.length - 1].year + " " + books[books.length - 1].genre;
+	div2.appendChild(p);
+	
+	let a = document.createElement('A');
+	a.setAttribute('class', 'btn btn-primary');
+	a.setAttribute('href', "/" + books[books.length - 1].title);
+	a.innerHTML = "View Book";
+	div2.appendChild(a);
+	
+	bookshelf.appendChild(newBook);
+});
