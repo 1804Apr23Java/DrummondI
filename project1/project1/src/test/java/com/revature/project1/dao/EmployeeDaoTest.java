@@ -34,10 +34,8 @@ public class EmployeeDaoTest {
 	@Before
 	public void setupDatabaseForTest() {
 		try {
-			//con.setAutoCommit(true);
-			String sql = "DELETE FROM all_emp WHERE e_id <> 1";
-			PreparedStatement p = con.prepareStatement(sql);
-			int affectedRows = p.executeUpdate();
+			PreparedStatement p = con.prepareStatement("DELETE FROM all_emp WHERE e_id <> 1");
+			p.executeUpdate();
 			con.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
