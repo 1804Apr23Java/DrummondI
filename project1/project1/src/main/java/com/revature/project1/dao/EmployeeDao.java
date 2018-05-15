@@ -12,7 +12,11 @@ import com.revature.project1.transportObjects.Employee;
 import com.revature.project1.utilityClasses.ConnectionUtil;
 
 public class EmployeeDao implements EmployeeDaoInterface {
-
+	
+	/**
+	 * 
+	 * 
+	 */
 	@Override
 	public Employee getEmployeeById(int Id) throws SQLException {
 		try {
@@ -156,9 +160,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	}
 
 	@Override
-	public Employee updateEmployee(int Id, String username, String firstname, String lastname, String email, String password) throws SQLException {
-		Employee e = null;
-		
+	public boolean updateEmployee(int Id, String username, String firstname, String lastname, String email, String password) throws SQLException {
 		try {
 			Connection con = ConnectionUtil.getConnectionFromFile("connection.properties");
 			con.setAutoCommit(true);
@@ -176,32 +178,44 @@ public class EmployeeDao implements EmployeeDaoInterface {
 			
 			int result = p.executeUpdate();
 			if(result != 1) {
-				//TODO
+				return false;
 			}
 			
-				Employee e = new  Employee(results.getInt("e_id"), 
-						  results.getString("e_un"),
-						  results.getString("e_fn"),
-						  results.getString("e_ln"),
-						  results.getString("e_em"),
-						  results.getString("e_pw"));
-				con.close();
-				return e;
-			}
-			
-		} catch(SQLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			con.close();
+			return true;
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 		
-		return null;
+		return false;
 	}
 
 	@Override
 	public boolean deleteEmployee(int Id) throws SQLException {
-		// TODO Auto-generated method stub
+		try {
+			Connection con = ConnectionUtil.getConnectionFromFile("connection.properties");
+			con.setAutoCommit(true);
+				
+			String sql = "DELETE FROM all_emp WHERE e_id = ?";
+			
+			PreparedStatement p = con.prepareStatement(sql);
+			p.setInt(1, Id);
+			
+			int result = p.executeUpdate();
+			if(result != 1) {
+				return false;
+			}
+			
+			con.close();
+			return true;
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+		
 		return false;
 	}
-	
 }

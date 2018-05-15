@@ -27,14 +27,14 @@ public class EmployeeDaoTest {
 		try {
 			con = ConnectionUtil.getConnectionFromFile("connection.properties");
 		} catch(Exception e) {
-			
+			e.printStackTrace();
 		}
 	}
 	
 	@Before
 	public void setupDatabaseForTest() {
 		try {
-			con.setAutoCommit(true);
+			//con.setAutoCommit(true);
 			String sql = "DELETE FROM all_emp WHERE e_id <> 1";
 			PreparedStatement p = con.prepareStatement(sql);
 			int affectedRows = p.executeUpdate();
@@ -95,8 +95,8 @@ public class EmployeeDaoTest {
 		}
 		
 		List<Employee> allEmployees = e.getAllEmployees();
-		//allEmployees.sort(new EmployeeComparator<Employee>());
-		//eList.sort(new EmployeeComparator<Employee>());
+		allEmployees.sort(new EmployeeComparator<Employee>());
+		eList.sort(new EmployeeComparator<Employee>());
 		assertTrue(allEmployees.equals(eList));
 	}
 	
@@ -105,9 +105,16 @@ public class EmployeeDaoTest {
 		e.createEmployee("Lalala", "La", "LaLa", "La", "lala");
 		
 		Employee em = e.getEmployeeByUsername("Lalala");
-		e.updateEmployee(em.getEmployeeId(), "Bla", "Bla", "Bla", null, null);
+		assertTrue(e.updateEmployee(em.getEmployeeId(), "Bla", "Bla", "Bla", "dd", "sdf"));
 		
 		Employee e2 = e.getEmployeeById(em.getEmployeeId());
 		assertEquals("Bla", e2.getUsername());
+	}
+	
+	@Test
+	public void deleteEmployeeTest() throws SQLException {
+		e.createEmployee("Lalala", "La", "LaLa", "La", "lala");
+		Employee em = e.getEmployeeByUsername("Lalala");
+		assertTrue(e.deleteEmployee(em.getEmployeeId()));
 	}
 }
