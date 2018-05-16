@@ -13,10 +13,15 @@ import com.revature.project1.transportObjects.Employee;
 public interface EmployeeDaoInterface {
 	public Employee getEmployeeById(int Id) throws SQLException;
 	public Employee getEmployeeByUsername(String username) throws SQLException;
-	public List<Employee> getAllEmployees();
+	public List<Employee> getAllEmployees() throws SQLException;
 	public Employee createEmployee(String username, String firstname, 
 								   String lastname, String email, String password) throws SQLException;
 	public boolean updateEmployee(int Id, String username, String firstname, String lastname, String email,
 								   String password) throws SQLException;
+	public boolean updateEmployeeUsername(int Id, String username) throws SQLException;
+	public boolean updateEmployeeFirstname(int Id, String firstname) throws SQLException;
+	public boolean updateEmployeeLastname(int Id, String lastname) throws SQLException;
+	public boolean updateEmployeeEmail(int Id, String email) throws SQLException;
+	public boolean updateEmployeePassword(int Id, String password) throws SQLException;
 	public boolean deleteEmployee(int Id) throws SQLException;
 }
