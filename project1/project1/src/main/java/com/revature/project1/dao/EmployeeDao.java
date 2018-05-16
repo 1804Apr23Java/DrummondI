@@ -30,6 +30,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		try {
 			EmployeeDao e = new EmployeeDao();
 			e.con = ConnectionUtil.getConnectionFromFile("connection.properties");
+			e.con.setAutoCommit(true);
 			return e;
 		} catch(IOException ex) {
 			return null;
@@ -48,7 +49,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	@Override
 	public Employee getEmployeeById(int Id) throws SQLException {
-		Employee e = getEmployee("e_id", "" + Id);
+		Employee e = getEmployee(1, "" + Id);
 		
 		if(e == null) {
 			throw new EmployeeException("EmployeeId Invalid");
@@ -66,7 +67,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	@Override
 	public Employee getEmployeeByUsername(String username) throws SQLException {
-		Employee e = getEmployee("e_un", username);
+		Employee e = getEmployee(2, username);
 				
 		if(e == null) {
 			throw new EmployeeException("Username Invalid");
@@ -77,16 +78,16 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	
 	/**
 	 * Private method used to query the all_emp table based on a single column and value.
-	 * @param column the table column in all_emp table.
+	 * @param column the table column in all_emp table; 1 for e_id and anything else for e_un.
 	 * @param value the value of the table column in all_emp.
 	 * @return the Employee object representing the employee.
 	 * @throws SQLException if the SQL query causes an error.
 	 */
-	private Employee getEmployee(String column, String value) throws SQLException {
-		String sql = "SELECT e_id, e_un, e_pw, e_fn, e_ln, e_em FROM all_emp where ? = ?";
+	private Employee getEmployee(int column, String value) throws SQLException {
+		String sql = (column == 1) ? "SELECT e_id, e_un, e_pw, e_fn, e_ln, e_em FROM all_emp where e_id = ?" :
+									 "SELECT e_id, e_un, e_pw, e_fn, e_ln, e_em FROM all_emp where e_un = ?";
 		PreparedStatement p = con.prepareStatement(sql);
-		p.setString(1, column);
-		p.setString(2, value);
+		p.setString(1, value);
 		
 		ResultSet r = p.executeQuery();
 		if(r.next()) {
@@ -183,13 +184,17 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(5, password);
 		p.setInt(6, Id);
 		
-		int rowsAffected = p.executeUpdate();
-		if(rowsAffected != 1) {
-			throw new EmployeeException("EmployeeId does not exist or employee could not be updated due to constraints.\n"
-					  				  + "Username must be unique and below 51 characters.\n"
-					  				  + "Password must be less than 51 characters.\n"
-					  				  + "First and Last name must be less than 101 characters.\n"
-					  				  + "Email must be less than 101 characters.");
+		try {
+			int affectedRows = p.executeUpdate();
+			if(affectedRows != 1) {
+				throw new EmployeeException("Invalid Id");
+			}
+		} catch(SQLException e) {
+			throw new EmployeeException("Employee could not be updated due to constraints.\n"
+	  				  + "Username must be unique and below 51 characters.\n"
+	  				  + "Password must be less than 51 characters.\n"
+	  				  + "First and Last name must be less than 101 characters.\n"
+	  				  + "Email must be less than 101 characters.");
 		}
 		
 		return true;
@@ -224,7 +229,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	@Override
 	public boolean updateEmployeeUsername(int Id, String username) throws SQLException {
-		return updateEmployee("e_un", username, "" + Id);
+		return updateEmployee(0, username, "" + Id);
 	}
 
 	/**
@@ -236,7 +241,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	@Override
 	public boolean updateEmployeeFirstname(int Id, String firstname) throws SQLException {
-		return updateEmployee("e_fn", firstname, "" + Id);
+		return updateEmployee(1, firstname, "" + Id);
 	}
 
 	/**
@@ -248,7 +253,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	@Override
 	public boolean updateEmployeeLastname(int Id, String lastname) throws SQLException {
-		return updateEmployee("e_ln", lastname, "" + Id);
+		return updateEmployee(2, lastname, "" + Id);
 	}
 
 	/**
@@ -260,7 +265,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	@Override
 	public boolean updateEmployeeEmail(int Id, String email) throws SQLException {
-		return updateEmployee("e_em", email, "" + Id);
+		return updateEmployee(3, email, "" + Id);
 	}
 
 	/**
@@ -272,7 +277,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	@Override
 	public boolean updateEmployeePassword(int Id, String password) throws SQLException {
-		return updateEmployee("e_pw", password, "" + Id);
+		return updateEmployee(4, password, "" + Id);
 	}
 	
 	/**
@@ -283,11 +288,24 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @return true if the update was successful.
 	 * @exception EmployeeException if the Id does not exist or update failed due to constraints.
 	 */
-	private boolean updateEmployee(String column, String value, String id) throws SQLException {
-		PreparedStatement p = con.prepareStatement("UPDATE all_emp SET ? = ? WHERE e_id = ?");
-		p.setString(1, column);
-		p.setString(2, value);
-		p.setString(3, id);
+	private boolean updateEmployee(int column, String value, String id) throws SQLException {	
+		String sql = null;
+		switch(column) {
+			case 0: sql = "UPDATE all_emp SET e_un = ? WHERE e_id = ?";
+					break;
+			case 1: sql = "UPDATE all_emp SET e_fn = ? WHERE e_id = ?";
+					break;
+			case 2: sql = "UPDATE all_emp SET e_ln = ? WHERE e_id = ?";
+					break;
+			case 3: sql = "UPDATE all_emp SET e_em = ? WHERE e_id = ?";
+					break;
+			case 4: sql = "UPDATE all_emp SET e_pw = ? WHERE e_id = ?";
+					break;
+		}
+		
+		PreparedStatement p = con.prepareStatement(sql);
+		p.setString(1, value);
+		p.setString(2, id);
 		
 		try {
 			int rowsAffected = p.executeUpdate();

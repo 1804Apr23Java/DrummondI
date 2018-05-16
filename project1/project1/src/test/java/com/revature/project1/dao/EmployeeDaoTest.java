@@ -23,6 +23,12 @@ public class EmployeeDaoTest {
 	private static final EmployeeDao e = EmployeeDao.getEmployeeDao();
 	Connection con;
 	
+	private static final String bigErrorMessage = "Employee could not be updated due to constraints.\n"
+			  + "Username must be unique and below 51 characters.\n"
+			  + "Password must be less than 51 characters.\n"
+			  + "First and Last name must be less than 101 characters.\n"
+			  + "Email must be less than 101 characters.";
+	
 	@Rule 
 	public ExpectedException exception = ExpectedException.none();
 	
@@ -152,22 +158,14 @@ public class EmployeeDaoTest {
 	@Test
 	public void updateEmployeeInvalidUpdateTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("EmployeeId does not exist or employee could not be updated due to constraints.\n"
-					  				  + "Username must be unique and below 51 characters.\n"
-					  				  + "Password must be less than 51 characters.\n"
-					  				  + "First and Last name must be less than 101 characters.\n"
-					  				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		e.updateEmployee(-1, "Bla", "Bla", "Bla", "dd", "sdf");
 	}
 	
 	@Test
 	public void updateEmployeeInvalidUpdateUsernameNotUniqueTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("EmployeeId does not exist or employee could not be updated due to constraints.\n"
-					  				  + "Username must be unique and below 51 characters.\n"
-					  				  + "Password must be less than 51 characters.\n"
-					  				  + "First and Last name must be less than 101 characters.\n"
-					  				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		
 		e.createEmployee("Lalala", "La", "LaLa", "La", "lala");
 		e.createEmployee("Lalala2", "La", "LaLa", "La", "lala");
@@ -186,12 +184,13 @@ public class EmployeeDaoTest {
 	public void invalidDeleteEmployeeTest() throws SQLException {
 		exception.expect(EmployeeException.class);
 		exception.expectMessage("Invalid EmployeeId");
+		e.deleteEmployee(-1);
 	}
 	
 	@Test
 	public void updateEmployeeUsernameConvenienceTest() throws SQLException {
-		e.createEmployee("T", "La", "LaLa", "La", "lala");
-		Employee em = e.getEmployeeByUsername("T");
+		e.createEmployee("Tasj", "La", "LaLa", "La", "lala");
+		Employee em = e.getEmployeeByUsername("Tasj");
 		e.updateEmployeeUsername(em.getEmployeeId(), "C");
 		
 		assertTrue(e.getEmployeeById(em.getEmployeeId()).getUsername().equals("C"));
@@ -200,18 +199,14 @@ public class EmployeeDaoTest {
 	@Test
 	public void updateEmployeeUsernameConvenienceBadIdTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Invalid EmployeeId");
+		exception.expectMessage(bigErrorMessage);
 		e.updateEmployeeUsername(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeeUsernameConvenienceConstraintsViolatedTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Employee could not be updated due to constraints.\n"
-				  + "Username must be unique and below 51 characters.\n"
-				  + "Password must be less than 51 characters.\n"
-				  + "First and Last name must be less than 101 characters.\n"
-				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
@@ -230,18 +225,14 @@ public class EmployeeDaoTest {
 	@Test
 	public void updateEmployeeFirstnameConvenienceBadIdTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Invalid EmployeeId");
+		exception.expectMessage(bigErrorMessage);
 		e.updateEmployeeFirstname(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeeFirstnameConvenienceConstraintsViolatedTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Employee could not be updated due to constraints.\n"
-				  + "Username must be unique and below 51 characters.\n"
-				  + "Password must be less than 51 characters.\n"
-				  + "First and Last name must be less than 101 characters.\n"
-				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
@@ -261,18 +252,14 @@ public class EmployeeDaoTest {
 	@Test
 	public void updateEmployeeLastnameConvenienceBadIdTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Invalid EmployeeId");
+		exception.expectMessage(bigErrorMessage);
 		e.updateEmployeeLastname(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeeLastnameConvenienceConstraintsViolatedTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Employee could not be updated due to constraints.\n"
-				  + "Username must be unique and below 51 characters.\n"
-				  + "Password must be less than 51 characters.\n"
-				  + "First and Last name must be less than 101 characters.\n"
-				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
@@ -292,18 +279,14 @@ public class EmployeeDaoTest {
 	@Test
 	public void updateEmployeeEmailConvenienceBadIdTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Invalid EmployeeId");
+		exception.expectMessage(bigErrorMessage);
 		e.updateEmployeeUsername(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeeEmailConvenienceConstraintsViolatedTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Employee could not be updated due to constraints.\n"
-				  + "Username must be unique and below 51 characters.\n"
-				  + "Password must be less than 51 characters.\n"
-				  + "First and Last name must be less than 101 characters.\n"
-				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
@@ -313,8 +296,8 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeePasswordConvenienceTest() throws SQLException {
-		e.createEmployee("T", "La", "LaLa", "La", "lala");
-		Employee em = e.getEmployeeByUsername("T");
+		e.createEmployee("QED", "La", "LaLa", "La", "lala");
+		Employee em = e.getEmployeeByUsername("QED");
 		e.updateEmployeePassword(em.getEmployeeId(), "C");
 		
 		assertTrue(e.getEmployeeById(em.getEmployeeId()).getPassword().equals("C"));
@@ -323,25 +306,17 @@ public class EmployeeDaoTest {
 	@Test
 	public void updateEmployeePasswordConvenienceBadIdTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Employee could not be updated due to constraints.\n"
-				  + "Username must be unique and below 51 characters.\n"
-				  + "Password must be less than 51 characters.\n"
-				  + "First and Last name must be less than 101 characters.\n"
-				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		e.updateEmployeePassword(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeePasswordConvenienceConstraintsViolatedTest() throws SQLException {
 		exception.expect(EmployeeException.class);
-		exception.expectMessage("Employee could not be updated due to constraints.\n"
-				  + "Username must be unique and below 51 characters.\n"
-				  + "Password must be less than 51 characters.\n"
-				  + "First and Last name must be less than 101 characters.\n"
-				  + "Email must be less than 101 characters.");
+		exception.expectMessage(bigErrorMessage);
 		
-		e.createEmployee("T", "La", "LaLa", "La", "lala");
-		Employee em = e.getEmployeeByUsername("T");
+		e.createEmployee("TTTT", "La", "LaLa", "La", "lala");
+		Employee em = e.getEmployeeByUsername("TTTT");
 		e.updateEmployeePassword(em.getEmployeeId(), "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc");
 	}
 }
