@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { VampireService } from '../services/vampire.service';
+import { Vampire } from '../models/vampire.model';
 
 @Component({
   selector: 'app-books',
@@ -8,7 +10,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BooksComponent implements OnInit {
 
-  constructor() { }
+  constructor(private vampireService: VampireService) {
+
+  }
+  comment: string = this.vampireService.fetchComments();
+  //public vampire: Vampire[];
 
   ngOnInit() {
   }

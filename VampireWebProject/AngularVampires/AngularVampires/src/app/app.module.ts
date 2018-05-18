@@ -10,6 +10,7 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { MoviesComponent } from './movies/movies.component';
 import { BooksComponent } from './books/books.component';
 import { AllaboutComponent } from './allabout/allabout.component';
+import { VampireService } from './services/vampire.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { AllaboutComponent } from './allabout/allabout.component';
     AppRoutingModule,
     HttpModule,
   ],
-  providers: [],
+  providers: [VampireService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
