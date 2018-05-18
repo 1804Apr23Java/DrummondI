@@ -104,21 +104,13 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void createEmployeeViolatesConstraintUsernameTooLongTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage("Username must be unique and below 51 characters.\n"
-									  + "Password must be less than 51 characters.\n"
-									  + "First and Last name must be less than 101 characters.\n"
-									  + "Email must be less than 101 characters.");
+		exception.expect(SQLException.class);
 		e.createEmployee("J1000ffffffffffffffffffffffffffffffffffffffdsffffffffffffffsdfsdfsfs", "Molly", "Moon", "d", "sdfsfdsd");
 	}
 	
 	@Test
 	public void createEmployeeViolatesConstraintUsernameNotUniqueTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage("Username must be unique and below 51 characters.\n"
-									  + "Password must be less than 51 characters.\n"
-									  + "First and Last name must be less than 101 characters.\n"
-									  + "Email must be less than 101 characters.");
+		exception.expect(SQLException.class);
 		e.createEmployee("Molly", "moon", "beam", "blue", "moon");
 		e.createEmployee("Molly", "Molly", "Moon", "d", "sdfsfdsd");
 	}
@@ -155,15 +147,13 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeInvalidUpdateTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		e.updateEmployee(-1, "Bla", "Bla", "Bla", "dd", "sdf");
 	}
 	
 	@Test
 	public void updateEmployeeInvalidUpdateUsernameNotUniqueTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		
 		e.createEmployee("Lalala", "La", "LaLa", "La", "lala");
 		e.createEmployee("Lalala2", "La", "LaLa", "La", "lala");
@@ -180,8 +170,8 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void invalidDeleteEmployeeTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage("Invalid EmployeeId");
+		exception.expect(SQLException.class);
+		
 		e.deleteEmployee(-1);
 	}
 	
@@ -196,15 +186,13 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeUsernameConvenienceBadIdTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		e.updateEmployeeUsername(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeeUsernameConvenienceConstraintsViolatedTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
@@ -222,15 +210,14 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeFirstnameConvenienceBadIdTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
+		
 		e.updateEmployeeFirstname(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeeFirstnameConvenienceConstraintsViolatedTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
@@ -249,8 +236,8 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeLastnameConvenienceBadIdTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
+		
 		e.updateEmployeeLastname(-1, "C");
 	}
 	

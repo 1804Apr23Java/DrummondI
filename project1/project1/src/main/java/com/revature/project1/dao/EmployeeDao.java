@@ -24,7 +24,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	
 	/**
 	 * Returns an EmployeeDao object.
-	 * @return
+	 * @return an EmployeeDao.
 	 */
 	public static EmployeeDao getEmployeeDao() {
 		try {
@@ -45,17 +45,11 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param Id the unique employee Id belonging to the employee.
 	 * @return an Employee object representing the employee.
 	 * @Exception EmployeeException if employeeId does not exist
-	 * @Exception SQLException if the SQL statement causes an error.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public Employee getEmployeeById(int Id) throws SQLException {
-		Employee e = getEmployee(1, "" + Id);
-		
-		if(e == null) {
-			throw new EmployeeException("EmployeeId Invalid");
-		} else {
-			return e;
-		}
+		return getEmployee(1, "" + Id);
 	}
 
 	/**
@@ -63,17 +57,11 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param username the employee's unique username - case sensitive.
 	 * @return the employee object that represents the employee.
 	 * @exception SQLException if the SQL query causes an error.
-	 * @exception EmployeeException if the username does not exist.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public Employee getEmployeeByUsername(String username) throws SQLException {
-		Employee e = getEmployee(2, username);
-				
-		if(e == null) {
-			throw new EmployeeException("Username Invalid");
-		} else {
-			return e;
-		}
+		return getEmployee(2, username);
 	}
 	
 	/**
@@ -81,7 +69,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param column the table column in all_emp table; 1 for e_id and anything else for e_un.
 	 * @param value the value of the table column in all_emp.
 	 * @return the Employee object representing the employee.
-	 * @throws SQLException if the SQL query causes an error.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	private Employee getEmployee(int column, String value) throws SQLException {
 		String sql = (column == 1) ? "SELECT e_id, e_un, e_pw, e_fn, e_ln, e_em FROM all_emp where e_id = ?" :
@@ -102,7 +90,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	/**
 	 * Returns a list of every employee in the all_emp table.
 	 * @return a list of all employees.
-	 * @exception SQLException if the SQL query causes an error.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public List<Employee> getAllEmployees() throws SQLException {
@@ -127,8 +115,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param email the employee's email.
 	 * @param password the employee's password.
 	 * @return an Employee object representing the employee.
-	 * @exception SQLException if the SQL query causes an unrecoverable error.
-	 * @exception EmployeeException if the entered params violate any constraints or the employee was not inserted.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public Employee createEmployee(String username, String firstname, String lastname, String email, String password) throws SQLException {
@@ -139,15 +126,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(4, lastname);
 		p.setString(5, email);
 		
-		
-		try {
-			p.executeUpdate();
-		} catch(SQLException e) {
-			throw new EmployeeException("Username must be unique and below 51 characters.\n"
-									  + "Password must be less than 51 characters.\n"
-									  + "First and Last name must be less than 101 characters.\n"
-									  + "Email must be less than 101 characters.");
-		}
+		p.executeUpdate();
 		
 		p = con.prepareStatement("SELECT e_id, e_un, e_fn, e_ln, e_em, e_pw FROM all_emp WHERE e_un = ?");
 		p.setString(1, username);
@@ -171,8 +150,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param email the employee's email.
 	 * @param password the employee's password.
 	 * @return true if the employee updated successfully, will throw an error otherwise.
-	 * @exception EmployeeException if there was a problem updating the employee.
-	 * @exception SQLException if the SQL update caused an error.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public boolean updateEmployee(int Id, String username, String firstname, String lastname, String email, String password) throws SQLException {
@@ -184,19 +162,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(5, password);
 		p.setInt(6, Id);
 		
-		try {
-			int affectedRows = p.executeUpdate();
-			if(affectedRows != 1) {
-				throw new EmployeeException("Invalid Id");
-			}
-		} catch(SQLException e) {
-			throw new EmployeeException("Employee could not be updated due to constraints.\n"
-	  				  + "Username must be unique and below 51 characters.\n"
-	  				  + "Password must be less than 51 characters.\n"
-	  				  + "First and Last name must be less than 101 characters.\n"
-	  				  + "Email must be less than 101 characters.");
-		}
-		
+		p.executeUpdate();
 		return true;
 	}
 
@@ -204,19 +170,14 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * Deletes an employee from the employees table.
 	 * @param Id the unique identifier for the employee to be deleted.
 	 * @return true if the employee was deleted.
-	 * @exception EmployeeException if the id does not exist.
-	 * @exception SQLException if the SQL query caused an error.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public boolean deleteEmployee(int Id) throws SQLException {
 		PreparedStatement p = con.prepareStatement("DELETE FROM all_emp WHERE e_id = ?");
 		p.setInt(1, Id);
 		
-		int rowsAffected = p.executeUpdate();
-		if(rowsAffected != 1) {
-			throw new EmployeeException("Invalid EmployeeId");
-		}
-		
+		p.executeUpdate();
 		return true;
 	}
 
@@ -301,7 +262,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(1, password);
 		p.setInt(2, Id);
 		
-		p.executeUpdate();
-		return true;
+		int rowsUpdated = p.executeUpdate();
+		return (rowsUpdated == 1) ? true : false;
 	}
 }
