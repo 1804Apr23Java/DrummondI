@@ -1,0 +1,60 @@
+h1 {
+	text-align: center;
+}
+
+html {
+	background-color: black;
+	
+}
+
+h1, h2, h3, a, label, p, li {
+	color: red;
+}
+.navbar {
+	border: 3px solid red;
+}
+
+#homepageimg {
+	margin-top: 50px;
+	text-align: center;
+}
+
+#homepageimg2 {
+	width: 320px;
+	height: 400px;
+}
+n
+
+.nav {
+	padding: 5px;
+	margin: 5px;
+}
+.carousel {
+	width:360px;
+	height:360px;
+	margin:auto;
+	margin-top: 25px;
+  }
+a:hover {
+	color: white;
+}
+
+.formlabel {
+	display: inline-block;
+	width: 80px;
+	margin: 5px;
+}
+
+textarea {
+	width: 235px;
+	margin: 5px;
+}
+
+button {
+	margin-left: 100px;
+}
+
+.mediavampire {
+	height: 300px;
+	width: 200px;
+}
