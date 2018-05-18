@@ -225,11 +225,16 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param Id the unique employee identifier.
 	 * @param username The new username for the employee.
 	 * @return true if the update was successful.
-	 * @exception EmployeeException if the Id does not exist or update failed due to constraints.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public boolean updateEmployeeUsername(int Id, String username) throws SQLException {
-		return updateEmployee(0, username, "" + Id);
+		PreparedStatement p = con.prepareStatement("UPDATE all_emp SET e_un = ? WHERE e_id = ?");
+		p.setString(1, username);
+		p.setInt(2, Id);
+		
+		p.executeUpdate();
+		return true;
 	}
 
 	/**
@@ -237,11 +242,16 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param Id the unique employee identifier.
 	 * @param firstname The new firstname for the employee.
 	 * @return true if the update was successful.
-	 * @exception EmployeeException if the Id does not exist or update failed due to constraints.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public boolean updateEmployeeFirstname(int Id, String firstname) throws SQLException {
-		return updateEmployee(1, firstname, "" + Id);
+		PreparedStatement p = con.prepareStatement("UPDATE all_emp SET e_fn = ? WHERE e_id = ?");
+		p.setString(1, firstname);
+		p.setInt(2, Id);
+		
+		p.executeUpdate();
+		return true;
 	}
 
 	/**
@@ -249,11 +259,16 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param Id the unique employee identifier.
 	 * @param lastname The new lastname for the employee.
 	 * @return true if the update was successful.
-	 * @exception EmployeeException if the Id does not exist or update failed due to constraints.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public boolean updateEmployeeLastname(int Id, String lastname) throws SQLException {
-		return updateEmployee(2, lastname, "" + Id);
+		PreparedStatement p = con.prepareStatement("UPDATE all_emp SET e_ln = ? WHERE e_id = ?");
+		p.setString(1, lastname);
+		p.setInt(2, Id);
+		
+		p.executeUpdate();
+		return true;
 	}
 
 	/**
@@ -261,11 +276,16 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param Id the unique employee identifier.
 	 * @param email The new email for the employee.
 	 * @return true if the update was successful.
-	 * @exception EmployeeException if the Id does not exist or update failed due to constraints.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public boolean updateEmployeeEmail(int Id, String email) throws SQLException {
-		return updateEmployee(3, email, "" + Id);
+		PreparedStatement p = con.prepareStatement("UPDATE all_emp SET e_em = ? WHERE e_id = ?");
+		p.setString(1, email);
+		p.setInt(2, Id);
+		
+		p.executeUpdate();
+		return true;
 	}
 
 	/**
@@ -273,53 +293,15 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * @param Id the unique employee identifier.
 	 * @param password The new password for the employee.
 	 * @return true if the update was successful.
-	 * @exception EmployeeException if the Id does not exist or update failed due to constraints.
+	 * @exception SQLException if a database constraint was violated.
 	 */
 	@Override
 	public boolean updateEmployeePassword(int Id, String password) throws SQLException {
-		return updateEmployee(4, password, "" + Id);
-	}
-	
-	/**
-	 * Private method for updating employee.
-	 * @param column the column to be updated.
-	 * @param value the value to set the column to.
-	 * @param id the unique employee identifier.
-	 * @return true if the update was successful.
-	 * @exception EmployeeException if the Id does not exist or update failed due to constraints.
-	 */
-	private boolean updateEmployee(int column, String value, String id) throws SQLException {	
-		String sql = null;
-		switch(column) {
-			case 0: sql = "UPDATE all_emp SET e_un = ? WHERE e_id = ?";
-					break;
-			case 1: sql = "UPDATE all_emp SET e_fn = ? WHERE e_id = ?";
-					break;
-			case 2: sql = "UPDATE all_emp SET e_ln = ? WHERE e_id = ?";
-					break;
-			case 3: sql = "UPDATE all_emp SET e_em = ? WHERE e_id = ?";
-					break;
-			case 4: sql = "UPDATE all_emp SET e_pw = ? WHERE e_id = ?";
-					break;
-		}
+		PreparedStatement p = con.prepareStatement("UPDATE all_emp SET e_pw = ? WHERE e_id = ?");
+		p.setString(1, password);
+		p.setInt(2, Id);
 		
-		PreparedStatement p = con.prepareStatement(sql);
-		p.setString(1, value);
-		p.setString(2, id);
-		
-		try {
-			int rowsAffected = p.executeUpdate();
-			if(rowsAffected != 1) {
-				throw new EmployeeException("Invalid EmployeeId");
-			}
-		} catch(SQLException e) {
-			throw new EmployeeException("Employee could not be updated due to constraints.\n"
-	  				  + "Username must be unique and below 51 characters.\n"
-	  				  + "Password must be less than 51 characters.\n"
-	  				  + "First and Last name must be less than 101 characters.\n"
-	  				  + "Email must be less than 101 characters.");
-		}
-		
+		p.executeUpdate();
 		return true;
 	}
 }

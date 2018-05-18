@@ -3,6 +3,7 @@ package com.revature.project1.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -20,8 +21,8 @@ import com.revature.project1.transportObjects.EmployeeComparator;
 import com.revature.project1.utilityClasses.ConnectionUtil;
 
 public class EmployeeDaoTest {
-	private static final EmployeeDao e = EmployeeDao.getEmployeeDao();
-	Connection con;
+	private EmployeeDao e = null;
+	private Connection con = null;
 	
 	private static final String bigErrorMessage = "Employee could not be updated due to constraints.\n"
 			  + "Username must be unique and below 51 characters.\n"
@@ -35,7 +36,14 @@ public class EmployeeDaoTest {
 	public EmployeeDaoTest() {
 		try {
 			con = ConnectionUtil.getConnectionFromFile("connection.properties");
-		} catch(Exception e) {
+			
+			PreparedStatement p = con.prepareStatement("DELETE FROM all_emp");
+			p.executeUpdate();
+			
+			e = EmployeeDao.getEmployeeDao();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -43,9 +51,8 @@ public class EmployeeDaoTest {
 	@Before
 	public void setupDatabaseForTest() {
 		try {
-			PreparedStatement p = con.prepareStatement("DELETE FROM all_emp WHERE e_id <> 1");
+			PreparedStatement p = con.prepareStatement("DELETE FROM all_emp");
 			p.executeUpdate();
-			con.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -53,7 +60,14 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void getEmployeeByIdTest() throws SQLException {
-		assertEquals(1, e.getEmployeeById(1).getEmployeeId());
+		Employee emp = e.createEmployee("Username", "Firstname", "Lastname", "Email", "Password");
+		Employee test = e.getEmployeeById(emp.getEmployeeId());
+		
+		assertEquals(emp.getEmployeeId(), test.getEmployeeId());
+		assertEquals(emp.getUsername(), test.getUsername());
+		assertEquals(emp.getLastname(), test.getFirstname());
+		assertEquals(emp.getEmail(), test.getEmail());
+		assertEquals(emp.getPassword(), test.getPassword());
 	}
 	
 	@Test
@@ -64,15 +78,15 @@ public class EmployeeDaoTest {
 	}
 	
 	@Test
-	public void getEmployeeByIdValidUsernameTest() throws SQLException {
-		Employee employee = e.getEmployeeById(1);
-		Employee em = e.getEmployeeByUsername(employee.getUsername());
+	public void getEmployeeByValidUsernameTest() throws SQLException {
+		Employee emp = e.createEmployee("Username", "Firstname", "Lastname", "Email", "Password");
+		Employee test = e.getEmployeeByUsername(emp.getUsername());
 		
-		assertTrue(em.getUsername().equals("Username") 
-				   && em.getFirstname().equals("Firstname") 
-				   && em.getLastname().equals("Lastname") 
-				   && em.getEmail().equals("Email") 
-				   && em.getPassword().equals("Password"));
+		assertEquals(test.getUsername(), emp.getUsername());
+		assertEquals(test.getFirstname(), emp.getFirstname());
+		assertEquals(test.getLastname(), emp.getLastname());
+		assertEquals(test.getEmail(), emp.getEmail());
+		assertEquals(test.getPassword(), emp.getPassword());
 	}
 	
 	@Test
@@ -80,21 +94,6 @@ public class EmployeeDaoTest {
 		exception.expect(EmployeeException.class);
 		exception.expectMessage("Username Invalid");
 		e.getEmployeeByUsername("Fake Username");
-	}
-	
-	@Test
-	public void getEmployeeByUsernameTest() throws SQLException {
-		assertEquals(1, e.getEmployeeByUsername("Username").getEmployeeId());
-	}
-	
-	@Test
-	public void getEmployeeByUsernameValidFieldsTest() throws SQLException {
-		Employee em = e.getEmployeeByUsername("Username");
-		assertTrue(em.getUsername().equals("Username") 
-				   && em.getFirstname().equals("Firstname") 
-				   && em.getLastname().equals("Lastname") 
-				   && em.getEmail().equals("Email") 
-				   && em.getPassword().equals("Password"));
 	}
 	
 	@Test
@@ -127,7 +126,6 @@ public class EmployeeDaoTest {
 	@Test
 	public void getAllEmployeesTest() throws SQLException {
 		List<Employee> eList = new ArrayList<Employee>();
-		eList.add(new Employee(1, "Username", "Firstname", "Lastname", "Email", "Password"));
 		
 		for(int i = 0; i < 10; i++) {
 			eList.add(new Employee(i, "Username" + i, "Firstname" + i, "Lastname" + i, "Email" + i, "Password" + i));
@@ -258,13 +256,12 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeLastnameConvenienceConstraintsViolatedTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
 		e.updateEmployeeLastname(em.getEmployeeId(), "CCCCCCCCCCCCCCCCCCCCCCCCCCCsdfsdfsdfsddsfdsfsdfsddfsdfsdfd" 
-				+ "sdfdsfsdsfdsfdsdfdsfdsfCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc");
+												   + "sdfdsfsdsfdsfdsdfdsfdsfCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc");
 	}
 	
 	@Test
@@ -278,20 +275,19 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeEmailConvenienceBadIdTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
+		
 		e.updateEmployeeUsername(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeeEmailConvenienceConstraintsViolatedTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		
 		e.createEmployee("T", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("T");
 		e.updateEmployeeEmail(em.getEmployeeId(), "CCCCCCCCCCCCCCCCCCCCCCCCCCCsdfsdfsdfsddsfdsfsdfsddfsdfsdfd" 
-													+ "sdfdsfsdsfdsfdsdfdsfdsfCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc");
+												+ "sdfdsfsdsfdsfdsdfdsfdsfCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc");
 	}
 	
 	@Test
@@ -305,15 +301,14 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeePasswordConvenienceBadIdTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
+		
 		e.updateEmployeePassword(-1, "C");
 	}
 	
 	@Test
 	public void updateEmployeePasswordConvenienceConstraintsViolatedTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage(bigErrorMessage);
+		exception.expect(SQLException.class);
 		
 		e.createEmployee("TTTT", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("TTTT");

@@ -1,8 +1,12 @@
 package com.revature.project1.dao;
 
+import com.revature.project1.transportObjects.Request;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -10,16 +14,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.omg.CORBA.Request;
 
+import com.revature.project1.customExceptions.EmployeeException;
+import com.revature.project1.customExceptions.RequestException;
 import com.revature.project1.transportObjects.Employee;
 import com.revature.project1.utilityClasses.ConnectionUtil;
 
 public class RequestDaoTest {
 	
-	private static final RequestDAO d = new RequestDao();
+	private static final RequestDao d = RequestDao.getRequestDao();
 	private Connection con;
 	private EmployeeDao e;
 	private Employee u;
@@ -32,13 +38,19 @@ public class RequestDaoTest {
 		try {
 			con = ConnectionUtil.getConnectionFromFile("connection.properties");
 			
-			e = EmployeeDao.getEmployeeDao();
-			u = e.createEmployee("TestUser1", "TestName", "TestName", "TestEmail", "TestPassword");
+			try {
+				e = EmployeeDao.getEmployeeDao();
+				u = e.getEmployeeByUsername("TestUser1");
+			} catch(EmployeeException ex) {
+				u = e.createEmployee("TestUser1", "t", "t", "t", "t");
+			}
 			
-			FileInputStream fileImage = new FileInputStream("/testImages/ReceiptSwiss.jpg");
-		} catch(Exception e) {
+			FileInputStream fileImage = new FileInputStream("ReceiptSwiss.jpg");
+		} catch(SQLException e) {
 			e.printStackTrace();
-		} 
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Before
@@ -58,17 +70,19 @@ public class RequestDaoTest {
 	public void createRequestTest() throws SQLException {
 		Request req = d.createRequest(u.getEmployeeId(), 345.00, fileImage);
 		
-		assertEquals(345.00, req.getAmount());
+		assertTrue(345.00 - req.getAmount() < 0.01);
 		assertEquals(u.getEmployeeId(), req.getEmployeeId());
-		assertEquals("Pending", req.getRequestStatus());
+		assertEquals("Pending", req.getStatus());
 	}
 	
 	/* Test creating a request with a constraint violating Id.
 	 */
 	@Test
-	public void badCreateRequestTest() throws SQLException {
+	public void badCreateRequestTest1() throws SQLException {
 		exception.expect(RequestException.class);
-		exception.expectMessage("EmployeeId is Invalid.");
+		exception.expectMessage("Could not create request.\n"
+				 + "EmployeeId must be a valid employee Id\n"
+				 + "Request amount must be greater than 0\n");
 		
 		Request req = d.createRequest(-1, 345.00, fileImage);
 	}
@@ -78,7 +92,9 @@ public class RequestDaoTest {
 	@Test
 	public void badCreateRequestTest() throws SQLException {
 		exception.expect(RequestException.class);
-		exception.expectMessage("Invalid amount.");
+		exception.expectMessage("Could not create request.\n"
+				 + "EmployeeId must be a valid employee Id\n"
+				 + "Request amount must be greater than 0\n");
 		
 		Request req = d.createRequest(u.getEmployeeId(), -2.00, fileImage);
 	}
@@ -91,18 +107,18 @@ public class RequestDaoTest {
 		Request req2 = d.getRequest(req.getRequestId());
 		
 		assertEquals(req.getEmployeeId(), req2.getEmployeeId());
-		assertEquals(req.getAmount(), req2.getAmount());
+		assertTrue(req.getAmount() - req2.getAmount() < 0.01);
 		assertEquals(req.getImage(), req2.getImage());
 	}
 	
 	/* Test retrieving a request with a constraint violating id
 	 */
-	@
+	@Test
 	public void getRequestByBadIdTest() throws SQLException {
 		exception.expect(RequestException.class);
 		exception.expectMessage("RequestId Invalid");
 		
-		Request req2 = d.getRequest(-1);
+		d.getRequest(-1);
 	}
 	
 	
@@ -113,7 +129,7 @@ public class RequestDaoTest {
 		ArrayList<Request> list = new ArrayList<>();
 		
 		for(int i = 0; i < 10; i++) {
-			list.add(d.createRequest(u.getEmployeeId(), i, fileImage);
+			list.add(d.createRequest(u.getEmployeeId(), i, fileImage));
 		}
 		
 		assertEquals(list, d.getEmployeesRequests(u.getEmployeeId()));
@@ -125,14 +141,14 @@ public class RequestDaoTest {
 		exception.expect(RequestException.class);
 		exception.expectMessage("EmployeeId Invalid");
 		
-		g.getEmployeesRequests(-1);
+		d.getEmployeesRequests(-1);
 	}
 	
 
 	/* Test getting all requests in the database.
 	 */
 	@Test
-	public void getAllEmployeesRequestsTest() {
+	public void getAllEmployeesRequestsTest() throws SQLException {
 		Employee m = e.createEmployee("MMM", "MM", "mm", "mm", "mm");
 		Employee o = e.createEmployee("oo", "oo", "oo", "oo", "oo");
 		Employee p = e.createEmployee("pp", "pp", "pp", "pp", "pp");
@@ -154,7 +170,7 @@ public class RequestDaoTest {
 		
 		ArrayList<Request> l4 = new ArrayList<>();
 		for(int i = 0; i < 10; i++) {
-			l4.add(p.createRequest(m.getEmployeeId(), i, fileImage));
+			l4.add(d.createRequest(m.getEmployeeId(), (double) i, fileImage));
 		}
 		
 		ArrayList<ArrayList<Request>> list1 = new ArrayList<>();
@@ -163,7 +179,7 @@ public class RequestDaoTest {
 		list1.add(l3);
 		list1.add(l4);
 		
-		ArrayList<ArrayList<Request>> list2 = d.getAllEmployeesRequests();
+		ArrayList<ArrayList<Request>> list2 = (ArrayList<ArrayList<com.revature.project1.transportObjects.Request>>) d.getAllEmployeeRequests();
 		
 		assertEquals(list1, list2);
 	}
@@ -171,39 +187,39 @@ public class RequestDaoTest {
 	/* Test updating a request.
 	 */
 	@Test
-	public void updateRequestTest() {
+	public void updateRequestTest() throws SQLException {
 		Request req = d.createRequest(u.getEmployeeId(), 100.0, fileImage);
 		assertTrue(d.updateRequest(req.getRequestId(), 500, fileImage));
 		req = d.getRequest(req.getRequestId());
 		
-		assertEquals(500.0, req.getAmount());
+		assertTrue(500.0 - req.getAmount() < 0.1);
 	}
 	
 	/* Test updating with a constraint violating request
 	 */
 	@Test 
-	public void updateRequestBadTest() {
+	public void updateRequestBadTest() throws SQLException {
 		exception.expect(RequestException.class);
 		exception.expectMessage("RequestId Invalid");
 		
-		d.getRequest(-1, 5.0. fileImage);
+		d.updateRequest(-1, 5.0, fileImage);
 	}
 	
 	/* Test updating the amount
 	 */
 	@Test
-	public void updateAmountTest() {
+	public void updateAmountTest() throws SQLException {
 		Request req = d.createRequest(u.getEmployeeId(), 100.0, fileImage);
-		assertTrue(d.updateAmount(req.getRequestId(), 500);
+		assertTrue(d.updateAmount(req.getRequestId(), 500));
 		
 		req = d.getRequest(req.getRequestId());
-		assertEquals(500.0, req.getAmount());
+		assertTrue(500.0 - req.getAmount() < 0.1);
 	}
 	
 	/* Test updating with a constraint violating request
 	 */
 	@Test
-	public void badUpdateAmountTest() {
+	public void badUpdateAmountTest() throws SQLException{
 		exception.expect(RequestException.class);
 		exception.expectMessage("Amount Invalid");
 		
@@ -214,25 +230,43 @@ public class RequestDaoTest {
 	/* Test updating an image
 	 */
 	@Test
-	public void updateImageTest() {
+	public void updateImageTest() throws SQLException {
 		Request req = d.createRequest(u.getEmployeeId(), 100.0, fileImage);
-		assertTrue(d.updateImage(req.getRequestId(), fileImage);
+		assertTrue(d.updateImage(req.getRequestId(), fileImage));
+	}
+	
+	/* Test updating the status
+	 */
+	@Test
+	public void updateStatusTest() throws SQLException {
+		Request req = d.createRequest(u.getEmployeeId(), 100.0, fileImage);
+		assertTrue(d.updateStatus(req.getRequestId(), "Approved"));
+	}
+	
+	@Test
+	public void badUpdateStatusTest() throws SQLException {
+		exception.expect(RequestException.class);
+		exception.expectMessage("RequestId invalid");
+		
+		Request req = d.createRequest(u.getEmployeeId(), 100.0, fileImage);
+		d.updateStatus(-1, "sdfsfsdf");
 	}
 	
 	/* Test deleting a request
 	 */
 	@Test
-	public void deleteRequestTest() {
+	public void deleteRequestTest() throws SQLException {
 		Request req = d.createRequest(u.getEmployeeId(), 100.0, fileImage);
-		assertTrue(d.deleteRequest(req.getRequestId());
+		assertTrue(d.deleteRequest(req.getRequestId()));
 	}
 
 	/* Test deleting with a constraint violating id.
 	 */
 	@Test
-	public void badDeleteRequestTest() {
+	public void badDeleteRequestTest() throws SQLException {
 		exception.expect(RequestException.class);
-		exception.expectMessage("RequestId Invalid");
+		exception.expectMessage("Could not Delete request.\n"
+				 + "RequestId must be a valid id.");
 		
 		d.deleteRequest(-1);
 	}

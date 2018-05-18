@@ -1,5 +1,6 @@
 package com.revature.project1.transportObjects;
 
+import java.io.InputStream;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ public class Request {
 	private double amount;
 	private String status;
 	private Date date;
-	private byte[] image;
+	private InputStream image;
 	
 	/**
 	 * Constructor for request.
@@ -23,26 +24,13 @@ public class Request {
 	 * @param date The date the request was submitted.
 	 * @param image A byte array representing the image of the request receipt.
 	 */
-	public Request(int requestId, int employeeId, double amount, String status, Date date, byte[] image) {
+	public Request(int requestId, int employeeId, double amount, String status, Date date, InputStream image) {
 		super();
 		this.requestId = requestId;
 		this.employeeId = employeeId;
 		this.amount = amount;
 		this.status = status;
 		this.date = date;
-		this.image = image;
-	}
-	
-	/**
-	 * Constructor for request.
-	 * @param employeeId The id of the employee the request belongs to.
-	 * @param amount The amount of money the request is for.
-	 * @param image A byte array representing the image of the request receipt.
-	 */
-	public Request(int employeeId, double amount, byte[] image) {
-		super();
-		this.employeeId = employeeId;
-		this.amount = amount;
 		this.image = image;
 	}
 	
@@ -84,15 +72,40 @@ public class Request {
 	/**
 	 * @return A byte array representing the request receipt.
 	 */
-	public byte[] getImage() {
+	public InputStream getImage() {
 		return image;
 	}
 
+
 	/**
-	 * @return The String representation of the request.
+	 * Checks if two requests are equal.
+	 * @param obj the request to compare.
 	 */
 	@Override
-	public String toString() {
-		return null;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Request other = (Request) obj;
+		if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (employeeId != other.employeeId)
+			return false;
+		if (requestId != other.requestId)
+			return false;
+		if (status == null) {
+			if (other.status != null)
+				return false;
+		} else if (!status.equals(other.status))
+			return false;
+		return true;
 	}
 }
