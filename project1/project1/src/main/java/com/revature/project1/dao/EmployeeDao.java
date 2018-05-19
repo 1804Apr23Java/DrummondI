@@ -162,8 +162,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(5, password);
 		p.setInt(6, Id);
 		
-		p.executeUpdate();
-		return true;
+		int rowsUpdated = p.executeUpdate();
+		return (rowsUpdated == 1) ? true : false;
 	}
 
 	/**
@@ -177,8 +177,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		PreparedStatement p = con.prepareStatement("DELETE FROM all_emp WHERE e_id = ?");
 		p.setInt(1, Id);
 		
-		p.executeUpdate();
-		return true;
+		int rowsDeleted = p.executeUpdate();
+		return (rowsDeleted == 1) ? true : false;
 	}
 
 	/**
@@ -194,8 +194,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(1, username);
 		p.setInt(2, Id);
 		
-		p.executeUpdate();
-		return true;
+		int rowsUpdated = p.executeUpdate();
+		return (rowsUpdated == 1) ? true : false;
 	}
 
 	/**
@@ -211,8 +211,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(1, firstname);
 		p.setInt(2, Id);
 		
-		p.executeUpdate();
-		return true;
+		int rowsUpdated = p.executeUpdate();
+		return (rowsUpdated == 1) ? true : false;
 	}
 
 	/**
@@ -228,8 +228,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(1, lastname);
 		p.setInt(2, Id);
 		
-		p.executeUpdate();
-		return true;
+		int rowsUpdated = p.executeUpdate();
+		return (rowsUpdated == 1) ? true: false;
 	}
 
 	/**
@@ -245,8 +245,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(1, email);
 		p.setInt(2, Id);
 		
-		p.executeUpdate();
-		return true;
+		int rowsUpdated = p.executeUpdate();
+		return (rowsUpdated == 1) ? true : false;
 	}
 
 	/**

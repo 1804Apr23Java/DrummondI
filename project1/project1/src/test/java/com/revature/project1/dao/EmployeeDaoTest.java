@@ -1,6 +1,8 @@
 package com.revature.project1.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -65,16 +67,15 @@ public class EmployeeDaoTest {
 		
 		assertEquals(emp.getEmployeeId(), test.getEmployeeId());
 		assertEquals(emp.getUsername(), test.getUsername());
-		assertEquals(emp.getLastname(), test.getFirstname());
+		assertEquals(emp.getFirstname(), test.getFirstname());
+		assertEquals(emp.getLastname(), test.getLastname());
 		assertEquals(emp.getEmail(), test.getEmail());
 		assertEquals(emp.getPassword(), test.getPassword());
 	}
 	
 	@Test
 	public void getEmployeeByInvalidIdTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage("EmployeeId Invalid");
-		e.getEmployeeById(-1);
+		assertNull(e.getEmployeeById(-1));
 	}
 	
 	@Test
@@ -91,9 +92,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void getEmployeeByInvalidUsernameTest() throws SQLException {
-		exception.expect(EmployeeException.class);
-		exception.expectMessage("Username Invalid");
-		e.getEmployeeByUsername("Fake Username");
+		assertNull(e.getEmployeeByUsername("Fake Username"));
 	}
 	
 	@Test
@@ -147,8 +146,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeInvalidUpdateTest() throws SQLException {
-		exception.expect(SQLException.class);
-		e.updateEmployee(-1, "Bla", "Bla", "Bla", "dd", "sdf");
+		assertFalse(e.updateEmployee(-1, "Bla", "Bla", "Bla", "dd", "sdf"));
 	}
 	
 	@Test
@@ -170,9 +168,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void invalidDeleteEmployeeTest() throws SQLException {
-		exception.expect(SQLException.class);
-		
-		e.deleteEmployee(-1);
+		assertFalse(e.deleteEmployee(-1));
 	}
 	
 	@Test
@@ -186,8 +182,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeUsernameConvenienceBadIdTest() throws SQLException {
-		exception.expect(SQLException.class);
-		e.updateEmployeeUsername(-1, "C");
+		assertFalse(e.updateEmployeeUsername(-1, "C"));
 	}
 	
 	@Test
@@ -210,9 +205,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeFirstnameConvenienceBadIdTest() throws SQLException {
-		exception.expect(SQLException.class);
-		
-		e.updateEmployeeFirstname(-1, "C");
+		assertFalse(e.updateEmployeeFirstname(-1, "C"));
 	}
 	
 	@Test
@@ -236,9 +229,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeLastnameConvenienceBadIdTest() throws SQLException {
-		exception.expect(SQLException.class);
-		
-		e.updateEmployeeLastname(-1, "C");
+		assertFalse(e.updateEmployeeLastname(-1, "C"));
 	}
 	
 	@Test
@@ -262,9 +253,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeeEmailConvenienceBadIdTest() throws SQLException {
-		exception.expect(SQLException.class);
-		
-		e.updateEmployeeUsername(-1, "C");
+		assertFalse(e.updateEmployeeUsername(-1, "C"));
 	}
 	
 	@Test
@@ -288,9 +277,7 @@ public class EmployeeDaoTest {
 	
 	@Test
 	public void updateEmployeePasswordConvenienceBadIdTest() throws SQLException {
-		exception.expect(SQLException.class);
-		
-		e.updateEmployeePassword(-1, "C");
+		assertFalse(e.updateEmployeePassword(-1, "C"));
 	}
 	
 	@Test
