@@ -54,6 +54,9 @@ public class EmployeeDaoTest {
 		try {
 			PreparedStatement p = con.prepareStatement("DELETE FROM all_emp");
 			p.executeUpdate();
+			
+			p = con.prepareStatement("DELETE FROM managers");
+			p.executeUpdate();
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -286,5 +289,29 @@ public class EmployeeDaoTest {
 		e.createEmployee("TTTT", "La", "LaLa", "La", "lala");
 		Employee em = e.getEmployeeByUsername("TTTT");
 		e.updateEmployeePassword(em.getEmployeeId(), "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCc");
+	}
+	
+	@Test
+	public void isManagerTest() throws SQLException {
+		Employee emp = e.createEmployee("A", "A", "A", "A", "A");
+		assertTrue(e.addManager(emp.getEmployeeId()));
+		assertTrue(e.isManager(emp.getEmployeeId()));
+	}
+	
+	@Test
+	public void isManagerFakeEmployeeTest() throws SQLException {
+		assertFalse(e.isManager(-1));
+	}
+	
+	@Test
+	public void deleteManagerTest() throws SQLException {
+		Employee emp = e.createEmployee("A", "A", "A", "A", "A");
+		assertTrue(e.addManager(emp.getEmployeeId()));
+		assertTrue(e.deleteManager(emp.getEmployeeId()));
+	}
+	
+	@Test
+	public void fakeEmployeeDeleteTest() throws SQLException {
+		assertFalse(e.deleteManager(-1));
 	}
 }

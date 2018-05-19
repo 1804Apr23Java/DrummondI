@@ -1,6 +1,6 @@
-DROP TABLE all_emp;
-DROP SEQUENCE inc;
-DROP TRIGGER tri;
+--DROP TABLE all_emp;
+--DROP SEQUENCE inc;
+--DROP TRIGGER tri;
 
 CREATE TABLE all_emp(
     e_id INTEGER PRIMARY KEY,
@@ -60,3 +60,14 @@ END;
 /
 
 COMMIT;
+
+
+///
+CREATE TABLE managers(
+    e_id INTEGER PRIMARY KEY,
+    CONSTRAINT e_id_fk FOREIGN KEY (e_id) REFERENCES all_emp(e_id) ON DELETE CASCADE
+);
+/
+
+COMMIT;
+/

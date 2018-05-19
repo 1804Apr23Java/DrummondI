@@ -264,4 +264,49 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		int rowsUpdated = p.executeUpdate();
 		return (rowsUpdated == 1) ? true : false;
 	}
+	
+	/**
+	 * Check if an employee is a manager.
+	 * @param employeeId the unique identifier for the employee.
+	 * @return true if the employee is a manager, false otherwise.
+	 * @exception SQLException if a database constraint was violated.
+	 */
+	@Override
+	public boolean isManager(int employeeId) throws SQLException {
+		PreparedStatement p = con.prepareStatement("SELECT e_id FROM managers WHERE e_id = ?");
+		p.setInt(1, employeeId);
+		
+		ResultSet rs = p.executeQuery();
+		return (rs.next()) ? true : false;
+	}
+
+	/**
+	 * Add an employee to the managers table.
+	 * @param employeeId the employee's unique identifier.
+	 * @return true if successful, false otherwise.
+	 * @exception SQLException if a database constraint was violated.
+	 */
+	@Override
+	public boolean addManager(int employeeId) throws SQLException {
+		PreparedStatement p = con.prepareStatement("INSERT INTO managers (e_id) values (?)");
+		p.setInt(1, employeeId);
+		
+		int rowsUpdated = p.executeUpdate();
+		return (rowsUpdated == 1) ? true : false;
+	}
+
+	/**
+	 * Delete an employee from the managers table.
+	 * @param employeeId the employee's unique identifier.
+	 * @return true if successfully deleted, false otherwise.
+	 * @exception SQLException if a database constraint was violated.
+	 */
+	@Override
+	public boolean deleteManager(int employeeId) throws SQLException {
+		PreparedStatement p = con.prepareStatement("DELETE FROM managers WHERE e_id = ?");
+		p.setInt(1, employeeId);
+		
+		int rowsDeleted = p.executeUpdate();
+		return (rowsDeleted == 1) ? true : false;
+	}
 }

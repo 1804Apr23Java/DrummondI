@@ -24,4 +24,8 @@ public interface EmployeeDaoInterface {
 	public boolean updateEmployeeEmail(int Id, String email) throws SQLException;
 	public boolean updateEmployeePassword(int Id, String password) throws SQLException;
 	public boolean deleteEmployee(int Id) throws SQLException;
+	
+	public boolean isManager(int employeeId) throws SQLException;
+	public boolean addManager(int employeeId) throws SQLException;
+	public boolean deleteManager(int employeeId) throws SQLException;
 }
