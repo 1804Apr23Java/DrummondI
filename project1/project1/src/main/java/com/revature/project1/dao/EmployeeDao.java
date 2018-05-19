@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.revature.project1.customExceptions.EmployeeException;
 import com.revature.project1.transportObjects.Employee;
 import com.revature.project1.utilityClasses.ConnectionUtil;
 

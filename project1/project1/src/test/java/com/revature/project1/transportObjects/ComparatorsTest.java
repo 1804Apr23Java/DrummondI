@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class EmployeeComparatorTest {
+public class ComparatorsTest {
 	
 	@Test
 	public void employeeComparatorTest() {
@@ -22,5 +22,19 @@ public class EmployeeComparatorTest {
 		assertEquals(1, eComparator.compare(e1, e4));
 		assertEquals(0, eComparator.compare(e1, e1));
 		assertEquals(1, eComparator.compare(e5, e2));
+	}
+	
+	@Test
+	public void requestComparatorTest() {
+		RequestComparator<Request> rComparator = new RequestComparator<>();
+		
+		Request r1 = new Request(1, 1, 2.0, "stat", null, null);
+		Request r2 = new Request(1, -1, 2.0, "stat", null, null);
+		Request r3 = new Request(1, 2, 2.0, "stat", null, null);
+		
+		assertEquals(-1, rComparator.compare(r1, r3));
+		assertEquals(-1, rComparator.compare(r2, r1));
+		assertEquals(0, rComparator.compare(r1, r1));
+		assertEquals(1, rComparator.compare(r1, r2));
 	}
 }

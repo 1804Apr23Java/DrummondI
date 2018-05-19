@@ -17,7 +17,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.revature.project1.customExceptions.EmployeeException;
 import com.revature.project1.transportObjects.Employee;
 import com.revature.project1.transportObjects.EmployeeComparator;
 import com.revature.project1.utilityClasses.ConnectionUtil;

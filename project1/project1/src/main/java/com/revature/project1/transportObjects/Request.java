@@ -108,4 +108,11 @@ public class Request {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Request [requestId=" + requestId + ", employeeId=" + employeeId + ", amount=" + amount + "]";
+	}
+	
+	
 }
