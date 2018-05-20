@@ -33,6 +33,11 @@
   		<artifactId>javax.servlet-api</artifactId>
   		<version>3.1.0</version>
     </dependency>
+    <dependency>
+        <groupId>com.oracle.ojdbc</groupId>
+        <artifactId>ojdbc</artifactId>
+        <version>12.1.0.1</version>
+     </dependency>
   </dependencies>
   <description>Ian's project 1 for revature</description>
 </project>

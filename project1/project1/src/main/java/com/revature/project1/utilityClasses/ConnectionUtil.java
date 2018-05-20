@@ -23,8 +23,11 @@ public class ConnectionUtil {
 	 */
 	public static Connection getConnectionFromFile(String filename) throws IOException, SQLException {
 		Properties pr = new Properties();
+		System.out.println("df");
 		InputStream inputstream = new FileInputStream(filename);
+		System.out.println("dsfdsfasasdffddfsafwefjkkkerlerlelelerlerl;;;;;;;");
 		pr.load(inputstream);
+		System.out.println("QWEQWEQWEQWE");
 		return DriverManager.getConnection(pr.getProperty("url"), pr.getProperty("username"), pr.getProperty("password"));
 	}
 }

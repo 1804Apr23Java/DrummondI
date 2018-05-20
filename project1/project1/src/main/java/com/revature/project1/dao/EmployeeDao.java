@@ -32,6 +32,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 			e.con.setAutoCommit(true);
 			return e;
 		} catch(IOException ex) {
+			System.out.println("fakndfllweriekc");
+			ex.printStackTrace();
 			return null;
 		} catch(SQLException ex) {
 			return null;
@@ -124,7 +126,7 @@ public class EmployeeDao implements EmployeeDaoInterface {
 		p.setString(3, firstname);
 		p.setString(4, lastname);
 		p.setString(5, email);
-		
+		System.out.println("got here");
 		p.executeUpdate();
 		
 		p = con.prepareStatement("SELECT e_id, e_un, e_fn, e_ln, e_em, e_pw FROM all_emp WHERE e_un = ?");
