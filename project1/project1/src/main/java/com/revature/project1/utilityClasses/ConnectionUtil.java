@@ -21,13 +21,25 @@ public class ConnectionUtil {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public static Connection getConnectionFromFile(String filename) throws IOException, SQLException {
+	public static Connection getConnectionFromFile(InputStream filename) throws IOException, SQLException {
+		try{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e){
+			e.printStackTrace();
+		}
+		
 		Properties pr = new Properties();
 		System.out.println("df");
-		InputStream inputstream = new FileInputStream(filename);
+		InputStream inputstream = filename;
 		System.out.println("dsfdsfasasdffddfsafwefjkkkerlerlelelerlerl;;;;;;;");
 		pr.load(inputstream);
+		
+		System.out.println(pr.getProperty("url"));
+		System.out.println(pr.getProperty("username"));
+		System.out.println(pr.getProperty("password"));
+		
 		System.out.println("QWEQWEQWEQWE");
+		
 		return DriverManager.getConnection(pr.getProperty("url"), pr.getProperty("username"), pr.getProperty("password"));
 	}
 }

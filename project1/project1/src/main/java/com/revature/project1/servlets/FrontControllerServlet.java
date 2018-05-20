@@ -31,7 +31,7 @@ public class FrontControllerServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			EmployeeDao e = EmployeeDao.getEmployeeDao();
+			EmployeeDao e = EmployeeDao.getEmployeeDao(getServletContext().getResourceAsStream("connection.properties"));
 			if(e == null) {
 				System.out.println("SDFASDFSDFSDFSDFSD");
 			}

@@ -1,6 +1,7 @@
 package com.revature.project1.dao;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,10 +26,10 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 * Returns an EmployeeDao object.
 	 * @return an EmployeeDao.
 	 */
-	public static EmployeeDao getEmployeeDao() {
+	public static EmployeeDao getEmployeeDao(InputStream f) {
 		try {
 			EmployeeDao e = new EmployeeDao();
-			e.con = ConnectionUtil.getConnectionFromFile("connection.properties");
+			e.con = ConnectionUtil.getConnectionFromFile(f);
 			e.con.setAutoCommit(true);
 			return e;
 		} catch(IOException ex) {
@@ -36,6 +37,8 @@ public class EmployeeDao implements EmployeeDaoInterface {
 			ex.printStackTrace();
 			return null;
 		} catch(SQLException ex) {
+			System.out.println("asdfksdfkldkfbnbnbnbnbnbnbnbnbnbbnbnbnnb");
+			ex.printStackTrace();
 			return null;
 		}
 	}
