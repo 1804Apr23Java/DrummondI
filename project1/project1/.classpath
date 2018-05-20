@@ -25,5 +25,7 @@
 	<classpathentry kind="lib" path="C:/Users/Ian/Desktop/hamcrest-core-1.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Ian/Desktop/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Ian/Desktop/ojdbc-12.1.0.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
