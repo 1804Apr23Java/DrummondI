@@ -40,7 +40,7 @@ public class RequestDaoTest {
 		try {
 			con = ConnectionUtil.getConnectionFromFile("connection.properties");
 	
-			e = EmployeeDao.getEmployeeDao();
+			e = EmployeeDao.getEmployeeDao("connection.properties");
 			
 			u = e.getEmployeeByUsername("TestUser1");
 			if(u == null) {

@@ -21,7 +21,7 @@ public class ConnectionUtil {
 	 * @throws IOException
 	 * @throws SQLException
 	 */
-	public static Connection getConnectionFromFile(InputStream filename) throws IOException, SQLException {
+	public static Connection getConnectionFromFileInputStream(InputStream filename) throws IOException, SQLException {
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 		} catch (ClassNotFoundException e){
@@ -29,16 +29,29 @@ public class ConnectionUtil {
 		}
 		
 		Properties pr = new Properties();
-		System.out.println("df");
 		InputStream inputstream = filename;
-		System.out.println("dsfdsfasasdffddfsafwefjkkkerlerlelelerlerl;;;;;;;");
 		pr.load(inputstream);
 		
-		System.out.println(pr.getProperty("url"));
-		System.out.println(pr.getProperty("username"));
-		System.out.println(pr.getProperty("password"));
+		return DriverManager.getConnection(pr.getProperty("url"), pr.getProperty("username"), pr.getProperty("password"));
+	}
+	
+	/**
+	 * Utility method for connecting to a database using a properties file.
+	 * @param filename The properties file containing the database url, username, and password.
+	 * @return A connection to the database.
+	 * @throws IOException
+	 * @throws SQLException
+	 */
+	public static Connection getConnectionFromFile(String filename) throws IOException, SQLException {
+		try{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (ClassNotFoundException e){
+			e.printStackTrace();
+		}
 		
-		System.out.println("QWEQWEQWEQWE");
+		Properties pr = new Properties();
+		InputStream inputstream = new FileInputStream(filename);
+		pr.load(inputstream);
 		
 		return DriverManager.getConnection(pr.getProperty("url"), pr.getProperty("username"), pr.getProperty("password"));
 	}

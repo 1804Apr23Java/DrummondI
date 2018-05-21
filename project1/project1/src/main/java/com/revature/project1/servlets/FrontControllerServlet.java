@@ -32,19 +32,14 @@ public class FrontControllerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			EmployeeDao e = EmployeeDao.getEmployeeDao(getServletContext().getResourceAsStream("connection.properties"));
-			if(e == null) {
-				System.out.println("SDFASDFSDFSDFSDFSD");
-			}
 			
-			
-			Employee emp = e.createEmployee("a", "a", "a", "a", "a");
+			Employee emp = e.getEmployeeByUsername("a");
 			if(emp == null) {
-				emp = e.getEmployeeByUsername("a");
+				emp = e.createEmployee("A", "a", "a", "a", "a");
 			}
 			
 			response.getWriter().append(emp.toString()).append(request.getContextPath());
 		} catch(SQLException ex) {
-			System.out.println("asvyolk");
 		}
 	}
 

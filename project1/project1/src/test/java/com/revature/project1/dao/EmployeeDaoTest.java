@@ -41,7 +41,7 @@ public class EmployeeDaoTest {
 			PreparedStatement p = con.prepareStatement("DELETE FROM all_emp");
 			p.executeUpdate();
 			
-			e = EmployeeDao.getEmployeeDao();
+			e = EmployeeDao.getEmployeeDao("connection.properties");
 		} catch(IOException e) {
 			e.printStackTrace();
 		} catch(SQLException e) {

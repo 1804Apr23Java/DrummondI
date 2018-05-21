@@ -24,20 +24,39 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	
 	/**
 	 * Returns an EmployeeDao object.
+	 * @param f the fileInputStream object containing the connection.properties information.
+	 * @return an EmployeeDao.
+	 */
+	public static EmployeeDao getEmployeeDao(String file) {
+		try {
+			EmployeeDao e = new EmployeeDao();
+			e.con = ConnectionUtil.getConnectionFromFile(file);
+			e.con.setAutoCommit(true);
+			return e;
+		} catch(IOException ex) {
+			ex.printStackTrace();
+			return null;
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Returns an EmployeeDao object.
+	 * @param f the fileInputStream object containing the connection.properties information.
 	 * @return an EmployeeDao.
 	 */
 	public static EmployeeDao getEmployeeDao(InputStream f) {
 		try {
 			EmployeeDao e = new EmployeeDao();
-			e.con = ConnectionUtil.getConnectionFromFile(f);
+			e.con = ConnectionUtil.getConnectionFromFileInputStream(f);
 			e.con.setAutoCommit(true);
 			return e;
 		} catch(IOException ex) {
-			System.out.println("fakndfllweriekc");
 			ex.printStackTrace();
 			return null;
 		} catch(SQLException ex) {
-			System.out.println("asdfksdfkldkfbnbnbnbnbnbnbnbnbnbbnbnbnnb");
 			ex.printStackTrace();
 			return null;
 		}
