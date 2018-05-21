@@ -36,11 +36,15 @@ public class FrontControllerServlet extends HttpServlet {
 				System.out.println("SDFASDFSDFSDFSDFSD");
 			}
 			
+			
 			Employee emp = e.createEmployee("a", "a", "a", "a", "a");
+			if(emp == null) {
+				emp = e.getEmployeeByUsername("a");
+			}
 			
 			response.getWriter().append(emp.toString()).append(request.getContextPath());
 		} catch(SQLException ex) {
-			
+			System.out.println("asvyolk");
 		}
 	}
 
