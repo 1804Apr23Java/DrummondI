@@ -26,6 +26,10 @@ public class RequestServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String r_id = request.getPathInfo();
+		System.out.println(r_id);
+		System.out.println(request.getRequestURI());
+		System.out.println("param = " + request.getParameter("id"));
+		
 	}
 
 	/**

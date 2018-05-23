@@ -16,10 +16,6 @@
 			let div1 = document.createElement('DIV');
 			div1.setAttribute('class', 'card text-center');
 			div1.setAttribute('style', "width: 18rem;");
-			
-			let img = document.createElement('IMG');
-			img.setAttribute('class', 'card-img-top');
-			div1.appendChild(img);
 				
 			let div2 = document.createElement('DIV');
 			div2.setAttribute('class', 'class-body');
@@ -55,14 +51,10 @@
 			
 			let a = document.createElement('A');
 			a.setAttribute('class', 'card-link');
-			a.setAttribute('href', '../request/' + r.r_id);
-			a.innerHTML = 'Update Request';
+			a.setAttribute('href', '../request/?id=' + r.r_id);
+			a.innerHTML = 'View Request';
 			div3.appendChild(a);
 			
-			let button = document.createElement('A');
-			button.setAttribute('class', 'card-link btn-danger');
-			div3.appendChild(button);
-			button.innerHTML = 'Delete Request';
 			requestContainer.appendChild(div1);
 		 }
 	 }
