@@ -67,7 +67,7 @@ public class EmployeeServlet extends HttpServlet {
 			json.append("\"r_id\" : \"" + re.getRequestId() + "\",");
 			json.append("\"amt\" : \"" + re.getAmount() + "\",");
 			json.append("\"date\" : \"" + re.getDate().toString() + "\",");
-			json.append("\"stat\" : \"" + re.getStatus() + "\",");
+			json.append("\"stat\" : \"" + re.getStatus() + "\"");
 			json.append("},");
 		}
 		

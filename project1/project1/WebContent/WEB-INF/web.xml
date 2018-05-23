@@ -4,7 +4,6 @@
   <welcome-file-list>
     <welcome-file>views/homepage.html</welcome-file>
   </welcome-file-list>
-  
   <servlet>
     <servlet-name>FrontControllerServlet</servlet-name>
     <servlet-class>com.revature.project1.servlets.FrontControllerServlet</servlet-class>
@@ -13,7 +12,6 @@
     <servlet-name>FrontControllerServlet</servlet-name>
     <url-pattern>/front/*</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>com.revature.project1.servlets.LogoutServlet</servlet-class>
@@ -22,7 +20,6 @@
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>EmployeeServlet</servlet-name>
     <servlet-class>com.revature.project1.servlets.EmployeeServlet</servlet-class>
@@ -30,5 +27,13 @@
   <servlet-mapping>
     <servlet-name>EmployeeServlet</servlet-name>
     <url-pattern>/employee/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>RequestServlet</servlet-name>
+    <servlet-class>com.revature.project1.servlets.RequestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RequestServlet</servlet-name>
+    <url-pattern>/request/*</url-pattern>
   </servlet-mapping>
 </web-app>

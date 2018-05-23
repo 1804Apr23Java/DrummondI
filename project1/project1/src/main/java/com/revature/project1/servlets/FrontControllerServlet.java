@@ -30,10 +30,10 @@ public class FrontControllerServlet extends HttpServlet {
     	map = new HashMap<String, String>();
     	map.put("/login", "/views/homepage.html");
     	map.put("/signup", "/views/signuppage.html");
-    	map.put("/ehome", "/employee/ehome");
+    	map.put("/ehome", "/views/employeepage.html");
     	map.put("/ecreate", "/views/createemployee.html");
     	map.put("/eview", "/views/employeerequests.html");
-    	map.put("/ecancel", "/employee/ecancel");
+    	map.put("/ecancel", "/views/employeepage.html");
     	map.put("/logout", "/logout");
     }
 	
