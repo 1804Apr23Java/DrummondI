@@ -29,14 +29,21 @@ public class EmployeeDao implements EmployeeDaoInterface {
 	 */
 	public static EmployeeDao getEmployeeDao(String file) {
 		try {
+			System.out.println("EHERHEHREHRREHRHsassss");
 			EmployeeDao e = new EmployeeDao();
+			System.out.println("EHERHEHREHRREHRHaaaa");
 			e.con = ConnectionUtil.getConnectionFromFile(file);
 			e.con.setAutoCommit(true);
+			
+			System.out.println("EHERHEHREHRREHRH");
+			
 			return e;
 		} catch(IOException ex) {
+			System.out.println("EHERHEHREHRREHRH");
 			ex.printStackTrace();
 			return null;
 		} catch(SQLException ex) {
+			System.out.println("sdafdfsasfdasfdsfddfklklklkfldkfldkldf");
 			ex.printStackTrace();
 			return null;
 		}
