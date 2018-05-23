@@ -2,6 +2,7 @@ package com.revature.project1.dao;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -43,6 +44,23 @@ public class RequestDao implements RequestDaoInterface {
 			return null;
 		}
 	}
+	
+	/**
+	 * Gets a RequestDao
+	 * @return the RequestDao, or null if there were errors establishing the database connection.
+	 */
+	public static RequestDao getRequestDao(InputStream f) {
+		try {
+			RequestDao r = new RequestDao();
+			r.con = ConnectionUtil.getConnectionFromFileInputStream(f);
+			r.con.setAutoCommit(true);
+			return r;
+		} catch(IOException ex) {
+			return null;
+		} catch(SQLException ex) {
+			return null;
+		}
+	}
 
 	/**
 	 * Inserts a request into the database.
@@ -53,7 +71,7 @@ public class RequestDao implements RequestDaoInterface {
 	 * @exception SQLException if the request violates one of the database constraints.
 	 */
 	@Override
-	public Request createRequest(int employeeId, double amount, FileInputStream image) throws SQLException {
+	public Request createRequest(int employeeId, double amount, InputStream image) throws SQLException {
 		PreparedStatement p = null;
 		if(image == null) {
 			p = con.prepareStatement("INSERT INTO requests(e_id, r_amt) VALUES (?, ?)");
@@ -162,7 +180,7 @@ public class RequestDao implements RequestDaoInterface {
 	 * @exception SQLException if the request violates one of the database constraints.
 	 */
 	@Override
-	public boolean updateRequest(int requestId, double amount, FileInputStream image) throws SQLException {
+	public boolean updateRequest(int requestId, double amount, InputStream image) throws SQLException {
 		PreparedStatement p = con.prepareStatement("UPDATE requests SET r_amt = ?, r_img = ? WHERE r_id = ?");
 		p.setDouble(1, amount);
 		p.setBinaryStream(2, image);
@@ -197,7 +215,7 @@ public class RequestDao implements RequestDaoInterface {
 	 * @exception SQLException if the request violates one of the database constraints.
 	 */
 	@Override
-	public boolean updateImage(int requestId, FileInputStream image) throws SQLException {
+	public boolean updateImage(int requestId, InputStream image) throws SQLException {
 		PreparedStatement p = con.prepareStatement("UPDATE requests SET r_img = ? WHERE r_id = ?");
 		p.setBinaryStream(1, image);
 		p.setInt(2, requestId);
