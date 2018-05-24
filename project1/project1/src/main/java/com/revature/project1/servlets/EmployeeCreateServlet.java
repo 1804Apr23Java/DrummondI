@@ -145,5 +145,4 @@ public class EmployeeCreateServlet extends HttpServlet {
 		
 		response.sendRedirect("/project1");
 	}
-
 }

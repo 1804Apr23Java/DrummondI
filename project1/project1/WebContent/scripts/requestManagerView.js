@@ -29,6 +29,23 @@ xhr.onreadystatechange = function() {
 				a.innerHTML = 'Amount: $ ' + new Number(r.amt).toFixed(2) + ' Status: ' + r.stat + '     Date: ' + r.date;
 				li.appendChild(a);
 				
+				let span = document.createElement('SPAN');
+				span.setAttribute('class', 'badge badge-secondary');
+				span.innerHTML = 'Delete';
+				span.addEventListener('click', (e) => {
+					let xhr = new XMLHttpRequest();
+					xhr.open('DELETE', '/project1/request/?id=' + r.r_id, true);
+					 
+					xhr.onreadystatechange = function() {
+						if(this.readyState == 4 && this.status == 200) {
+							window.location.href = '/project1/front/allEview';
+						}
+					}
+					 
+					xhr.send(null);
+				});
+				
+				li.appendChild(span);
 				ul.appendChild(li);
 			 }
 			 requestContainer.append(ul);
