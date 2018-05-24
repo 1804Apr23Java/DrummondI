@@ -76,8 +76,26 @@ public class RequestServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		HttpSession session = request.getSession(false);
+		System.out.println(request.getPathInfo());
+
+		if(session == null) {
+			response.sendRedirect("/project1/front/login");
+		}
+		
+		int req_id = Integer.parseInt(request.getParameter("id"));
+		String stat = request.getParameter("stat");
+		
+		RequestDao d = RequestDao.getRequestDao(getServletContext().getResourceAsStream("connection.properties"));
+		
+		try {
+			stat = (stat.equals("a")) ? "Approved" : "Denied";
+			d.updateStatus(req_id, stat);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		response.setStatus(200);
 	}
 	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

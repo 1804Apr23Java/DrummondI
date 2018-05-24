@@ -29,8 +29,42 @@ xhr.onreadystatechange = function() {
 				a.innerHTML = 'Amount: $ ' + new Number(r.amt).toFixed(2) + ' Status: ' + r.stat + '     Date: ' + r.date;
 				li.appendChild(a);
 				
-				let span = document.createElement('SPAN');
-				span.setAttribute('class', 'badge badge-secondary');
+				let span2 = document.createElement('BUTTON');
+				span2.setAttribute('class', 'btn btn-success');
+				span2.innerHTML = 'Approve';
+				span2.addEventListener('click', (e) => {
+					let xhr3 = new XMLHttpRequest();
+					xhr3.open('POST', '/project1/request/?id=' + r.r_id + '&stat=' + 'a', true);
+					 
+					xhr3.onreadystatechange = function() {
+						if(this.readyState == 4 && this.status == 200) {
+							window.location.href = '/project1/front/allEview';
+						}
+					}
+					 
+					xhr3.send(null);
+				});
+				li.appendChild(span2);
+				
+				let span3 = document.createElement('BUTTON');
+				span3.setAttribute('class', 'btn btn-warning');
+				span3.innerHTML = 'Deny';
+				span3.addEventListener('click', (e) => {
+					let xhr3 = new XMLHttpRequest();
+					xhr3.open('POST', '/project1/request/?id=' + r.r_id + '&stat=' + 'd', true);
+					 
+					xhr3.onreadystatechange = function() {
+						if(this.readyState == 4 && this.status == 200) {
+							window.location.href = '/project1/front/allEview';
+						}
+					}
+					 
+					xhr3.send(null);
+				});
+				li.appendChild(span3);
+				
+				let span = document.createElement('BUTTON');
+				span.setAttribute('class', 'btn btn-danger');
 				span.innerHTML = 'Delete';
 				span.addEventListener('click', (e) => {
 					let xhr = new XMLHttpRequest();
