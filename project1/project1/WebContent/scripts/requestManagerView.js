@@ -31,6 +31,7 @@ xhr.onreadystatechange = function() {
 				
 				let span2 = document.createElement('BUTTON');
 				span2.setAttribute('class', 'btn btn-success');
+				span2.setAttribute('id', 'btnB');
 				span2.innerHTML = 'Approve';
 				span2.addEventListener('click', (e) => {
 					let xhr3 = new XMLHttpRequest();
@@ -48,6 +49,7 @@ xhr.onreadystatechange = function() {
 				
 				let span3 = document.createElement('BUTTON');
 				span3.setAttribute('class', 'btn btn-warning');
+				span3.setAttribute('id', 'btnB');
 				span3.innerHTML = 'Deny';
 				span3.addEventListener('click', (e) => {
 					let xhr3 = new XMLHttpRequest();
@@ -65,6 +67,7 @@ xhr.onreadystatechange = function() {
 				
 				let span = document.createElement('BUTTON');
 				span.setAttribute('class', 'btn btn-danger');
+				span.setAttribute('id', 'btnB');
 				span.innerHTML = 'Delete';
 				span.addEventListener('click', (e) => {
 					let xhr = new XMLHttpRequest();
