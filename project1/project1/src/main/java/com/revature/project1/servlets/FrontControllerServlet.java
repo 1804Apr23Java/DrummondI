@@ -36,6 +36,8 @@ public class FrontControllerServlet extends HttpServlet {
     	map.put("/ecancel", "/views/employeepage.html");
     	map.put("/logout", "/logout");
     	map.put("/create", "/create");
+    	map.put("/manager", "/views/manager.jsp");
+    	map.put("/allEview", "/views/managerView.jsp");
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -70,7 +72,7 @@ public class FrontControllerServlet extends HttpServlet {
 			session.setAttribute("manager", manager);
 			
 			if(manager.equals("yes")) {
-				response.sendRedirect("/project1/front/login");
+				response.sendRedirect("/project1/front/manager");
 			} else {
 				response.sendRedirect("/project1/front/ehome");
 			}
