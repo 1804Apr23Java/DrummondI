@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.revature.project1.dao.EmployeeDao;
+import com.revature.project1.dao.RequestDao;
 import com.revature.project1.transportObjects.Employee;
 
 /**
@@ -50,4 +51,18 @@ public class EmployeeHandle extends HttpServlet {
 		doGet(request, response);
 	}
 
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int e_id = Integer.parseInt(request.getParameter("id"));
+		System.out.println("id = " + e_id);
+		EmployeeDao d = EmployeeDao.getEmployeeDao(getServletContext().getResourceAsStream("connection.properties"));
+		
+		try {
+			d.deleteEmployee(e_id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		response.setStatus(200);
+	}
 }
