@@ -34,13 +34,17 @@
 		</div>
 		
 		<div class="requestView" id=<%= request.getParameter("id") %>>
-			<p><%= request.getParameter("id") %></p>
+			<p><%= "Request # " + request.getParameter("id") %></p>
 			<div class="card" style="width: 18rem;">
 			  <img class="card-img-top" id="imgView" alt= <%= new String(request.getParameter("id")) %>>
 			  <div class="card-body">
-			    <h5 class="card-title">Card title</h5>
-			    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-			    <a href="#" class="btn btn-primary">Go somewhere</a>
+			    <h5 class="card-title"><%= "$ " + request.getAttribute("amt") %></h5>
+			    <p class="card-text"><%= "Submitted: " + request.getAttribute("date") %></p>
+			    <p class="card-text"><%= "Status: " + request.getAttribute("stat") %></p>
+			    <a href= <%= "../req/?id=" + request.getParameter("id") %> class="btn btn-primary">Update Request</a>
+			    <br>
+			    <br>
+			    <button id="deleteButton" class="btn btn-danger">Delete Request</button>
 			  </div>
 			</div>
 		</div>

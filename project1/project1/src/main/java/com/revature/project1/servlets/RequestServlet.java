@@ -81,6 +81,16 @@ public class RequestServlet extends HttpServlet {
 	}
 	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Delete");
+		int req_id = Integer.parseInt(request.getParameter("id"));
+		RequestDao d = RequestDao.getRequestDao(getServletContext().getResourceAsStream("connection.properties"));
+		System.out.println("here");
+		try {
+			d.deleteRequest(req_id);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		response.setStatus(200);
 	}
 }

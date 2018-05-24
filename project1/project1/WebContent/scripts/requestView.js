@@ -13,7 +13,7 @@ xhr.onreadystatechange = function() {
 			li.setAttribute('class', 'list-group-item');
 			let a = document.createElement('A');
 			a.setAttribute('href', '../request/?id=' + r.r_id);
-			a.innerHTML = 'Amount: $ ' + new Number(r.amt).toFixed(2) + '  Status: ' + r.stat + '  Date: ' + r.date;
+			a.innerHTML = 'Amount: $ ' + new Number(r.amt).toFixed(2) + '     Status: ' + r.stat + '     Date: ' + r.date;
 			li.appendChild(a);
 			
 			requestContainer.appendChild(li);

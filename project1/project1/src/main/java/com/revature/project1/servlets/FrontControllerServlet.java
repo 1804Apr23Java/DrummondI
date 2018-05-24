@@ -35,21 +35,16 @@ public class FrontControllerServlet extends HttpServlet {
     	map.put("/eview", "/views/employeerequests.html");
     	map.put("/ecancel", "/views/employeepage.html");
     	map.put("/logout", "/logout");
+    	map.put("/create", "/create");
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
+		String forward = map.get(request.getPathInfo());
+		System.out.println("forward = " + forward);
+		forward = (forward == null) ? "/views/404.html" : forward;
 		
-		if(session != null) {
-			String forward = map.get(request.getPathInfo());
-			forward = (forward == null) ? "/views/404.html" : forward;
-		
-			RequestDispatcher rd = request.getRequestDispatcher(forward);
-			rd.forward(request, response);
-		} else {
-			RequestDispatcher rd = request.getRequestDispatcher("/front/login");
-			rd.forward(request, response);
-		}
+		RequestDispatcher rd = request.getRequestDispatcher(forward);
+		rd.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
