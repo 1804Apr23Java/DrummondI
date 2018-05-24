@@ -1,9 +1,12 @@
 package com.revature.project1.servlets;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.sql.Blob;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +18,15 @@ import com.revature.project1.dao.RequestDao;
 import com.revature.project1.transportObjects.Request;
 
 /**
- * Servlet implementation class RequestServlet
+ * Servlet implementation class ImageServlet
  */
-public class RequestServlet extends HttpServlet {
+public class ImageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public RequestServlet() {
+    public ImageServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,42 +36,36 @@ public class RequestServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		System.out.println(request.getPathInfo());
-
 		if(session == null) {
-			RequestDispatcher rd = request.getRequestDispatcher("/front/login");
-			rd.forward(request, response);
-		} else {
 			
+		} else {
+			String id = request.getParameter("id");
 			RequestDao d = RequestDao.getRequestDao(getServletContext().getResourceAsStream("connection.properties"));
+			
 			try {
-				System.out.println(request.getRequestURI());
-				System.out.println("shghgh " + request.getParameter("id"));
-				Request req = d.getRequest(Integer.parseInt(request.getParameter("id")));
+				Request req = d.getRequest(Integer.parseInt(id));
 				
-				if(req.getEmployeeId() == (Integer) session.getAttribute("e_id")) {
-				
-					request.setAttribute("stat", req.getStatus());
-					request.setAttribute("date", req.getDate().toString());
-					request.setAttribute("amt", req.getAmount());
-					request.setAttribute("e_id", req.getEmployeeId());
-					
-					RequestDispatcher rd = request.getRequestDispatcher("/views/requestview.jsp");
-					rd.forward(request, response);
+				InputStream in = req.getImage();
+				if(in == null) {
 					return;
 				}
 				
+				response.setContentType("image/png");
+				OutputStream out = response.getOutputStream();
+				
+				byte[] buf = new byte[1024];
+                int count = 0;
+                while ((count = in.read(buf)) >= 0) {
+                        out.write(buf, 0, count);
+                }
+				out.flush();
 			} catch (NumberFormatException e) {
-				// TODO Error
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SQLException e) {
-				// TODO Error
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
-			//User trying to view request that does not belong to them or other error
-			RequestDispatcher rd = request.getRequestDispatcher("front/login");
-			rd.forward(request, response);
 		}
 	}
 
@@ -79,8 +76,5 @@ public class RequestServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Delete");
-	}
+
 }

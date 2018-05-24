@@ -38,12 +38,18 @@ public class FrontControllerServlet extends HttpServlet {
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("sdf = " + request.getRequestURI());
-		String forward = map.get(request.getPathInfo());
-		forward = (forward == null) ? "/views/404.html" : forward;
-		System.out.println(forward);
-		RequestDispatcher rd = request.getRequestDispatcher(forward);
-		rd.forward(request, response);
+		HttpSession session = request.getSession(false);
+		
+		if(session != null) {
+			String forward = map.get(request.getPathInfo());
+			forward = (forward == null) ? "/views/404.html" : forward;
+		
+			RequestDispatcher rd = request.getRequestDispatcher(forward);
+			rd.forward(request, response);
+		} else {
+			RequestDispatcher rd = request.getRequestDispatcher("/front/login");
+			rd.forward(request, response);
+		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,9 +62,7 @@ public class FrontControllerServlet extends HttpServlet {
 			Employee e = empDao.getEmployeeByUsername(username);
 			
 			if(e == null || !e.getPassword().equals(password)) {
-				System.out.println("sdfad");
-				RequestDispatcher rd = request.getRequestDispatcher("/views/homepage.html");
-				rd.forward(request, response);
+				response.sendRedirect("/project1/front/login");
 				return;
 			}
 		
@@ -71,15 +75,12 @@ public class FrontControllerServlet extends HttpServlet {
 			session.setAttribute("manager", manager);
 			
 			if(manager.equals("yes")) {
-				RequestDispatcher rd = request.getRequestDispatcher("/views/homepage.html");
-				rd.forward(request, response);
+				response.sendRedirect("/project1/front/login");
 			} else {
-				RequestDispatcher rd = request.getRequestDispatcher("/views/employeepage.html");
-				rd.forward(request, response);
+				response.sendRedirect("/project1/front/ehome");
 			}
 		} catch(SQLException ex) {
-			RequestDispatcher rd = request.getRequestDispatcher("/views/homepage.html");
-			rd.forward(request, response);
+			response.sendRedirect("/project1/front/login");
 		}
 	}
 }

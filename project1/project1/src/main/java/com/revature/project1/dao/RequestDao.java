@@ -183,7 +183,7 @@ public class RequestDao implements RequestDaoInterface {
 	public boolean updateRequest(int requestId, double amount, InputStream image) throws SQLException {
 		PreparedStatement p = con.prepareStatement("UPDATE requests SET r_amt = ?, r_img = ? WHERE r_id = ?");
 		p.setDouble(1, amount);
-		p.setBinaryStream(2, image);
+		p.setBlob(2, image);
 		p.setInt(3, requestId);
 		
 		int rowsUpdated = p.executeUpdate();
@@ -217,7 +217,7 @@ public class RequestDao implements RequestDaoInterface {
 	@Override
 	public boolean updateImage(int requestId, InputStream image) throws SQLException {
 		PreparedStatement p = con.prepareStatement("UPDATE requests SET r_img = ? WHERE r_id = ?");
-		p.setBinaryStream(1, image);
+		p.setBlob(1, image);
 		p.setInt(2, requestId);
 		
 		int rowsUpdated = p.executeUpdate();

@@ -1,20 +1,27 @@
 package com.revature.project1.servlets;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.ByteBuffer;
+import java.nio.file.Paths;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import javax.sql.rowset.serial.SerialException;
 
 import com.revature.project1.dao.RequestDao;
 import com.revature.project1.transportObjects.Request;
@@ -22,6 +29,7 @@ import com.revature.project1.transportObjects.Request;
 /**
  * Servlet implementation class EmployeeServlet
  */
+@MultipartConfig
 public class EmployeeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -101,20 +109,26 @@ public class EmployeeServlet extends HttpServlet {
 		//TODO add error checking
 		Integer e_id = (Integer) session.getAttribute("e_id");
 		
-		double amt = 0.0;
-		try {
-			amt = Double.parseDouble(request.getParameter("amount"));
-		} catch(NumberFormatException ex) {
-			//TODO error handing
-			return;
-		}
+		double amt = Double.parseDouble(request.getParameter("amount"));
 		
+		//Part fp = request.getPart("image");
+	   // InputStream f = fp.getInputStream();
+	    
+		///RequestDao r = RequestDao.getRequestDao(getServletContext().getResourceAsStream("connection.properties"));
+		//try {
+			//r.createRequest(e_id, amt, f);
+		//} catch (SQLException e) {
+			//TODO add error handling
+		//}
 		
-		InputStream image = new ByteArrayInputStream(request.getParameter("image").getBytes());
 		
 		RequestDao r = RequestDao.getRequestDao(getServletContext().getResourceAsStream("connection.properties"));
 		try {
-			r.createRequest(e_id, amt, image);
+			Request req = r.createRequest(e_id, amt, null);
+			
+			request.setAttribute("r_id", req.getRequestId());
+			RequestDispatcher rd = request.getRequestDispatcher("/views/imgForm.jsp");
+			rd.forward(request, response);
 		} catch (SQLException e) {
 			//TODO add error handling
 		}

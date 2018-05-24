@@ -36,4 +36,21 @@
     <servlet-name>RequestServlet</servlet-name>
     <url-pattern>/request/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>ImageServlet</servlet-name>
+    <servlet-class>com.revature.project1.servlets.ImageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImageServlet</servlet-name>
+    <url-pattern>/image/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>ImgUploadServlet</servlet-name>
+    <servlet-class>com.revature.project1.servlets.ImgUploadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ImgUploadServlet</servlet-name>
+    <url-pattern>/img/*</url-pattern>
+  </servlet-mapping>
 </web-app>

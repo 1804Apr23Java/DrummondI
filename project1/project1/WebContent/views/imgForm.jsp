@@ -24,9 +24,6 @@
 			        <a class="nav-link" href="eview">View Requests</a>
 			      </li>
 			      <li class="nav-item">
-			        <a class="nav-link " href="ecancel">Cancel a Request</a>
-			      </li>
-			      <li class="nav-item">
 			        <a class="nav-link " href="logout">Logout</a>
 			      </li>
 			    </ul>
@@ -35,11 +32,11 @@
 		</div>
 		
 		<div class="container">
-		<form class="col-md-4" method="post" action="../employee">
+		<form class="col-md-4" method="post" action= <%= "/project1/img/" + request.getAttribute("r_id") %> enctype="multipart/form-data">
 		  
 		  <div class="form-group">
-		    <label for="inputRequestAmount">Enter Request Amount</label>
-		    <input type="number" class="form-control" id="inputRequestAmount" aria-describedby="emailHelp" placeholder="$0.00" name="amount" required step="any">
+		    <label for="requestImage">Upload a request image</label>
+		    <input type="file" class="form-control" id="signupLastname"  name="image">
 		  </div>
 		  
 		  <button type="submit" class="btn btn-primary">Submit</button>
