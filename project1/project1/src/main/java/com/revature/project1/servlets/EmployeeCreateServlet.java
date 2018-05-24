@@ -134,10 +134,10 @@ public class EmployeeCreateServlet extends HttpServlet {
 		String pw = request.getParameter("password");
 		
 		EmployeeDao empDao = EmployeeDao.getEmployeeDao(getServletContext().getResourceAsStream("connection.properties"));
-		System.out.println("Here");
+		
 		try {
 			empDao.createEmployee(un, fn, ln, em, pw);
-			System.out.println("afsd");
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
