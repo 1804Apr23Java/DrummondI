@@ -38,6 +38,7 @@ public class FrontControllerServlet extends HttpServlet {
     	map.put("/create", "/create");
     	map.put("/manager", "/views/manager.jsp");
     	map.put("/allEview", "/views/managerView.jsp");
+    	map.put("/allEmp", "/views/allEmp.jsp");
     }
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
